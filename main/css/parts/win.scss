@@ -1,0 +1,49 @@
+$win-top-h: 20px;
+.win {
+	position: fixed;
+	height: calc(100vh - #{$topH});
+	width: 100vw;
+	top: $topH;
+	left: 0;
+	background: rgba(0, 0, 0, 0.8);
+	display: none;
+	justify-content: center;
+	align-items: center;
+	z-index: 1001;
+
+	.content-top {
+		width: 100%;
+		height: $win-top-h;
+	}
+	h4 {
+		margin-bottom: 10px;
+	}
+
+	.content {
+		width: 50vw;
+		padding: 5px;
+		background: rgba(255, 255, 255, 0.8);
+		text-align: center;
+	}
+	.error { -webkit-user-select: text; }
+	.button {
+		margin: 5px;
+		display: inline-block;
+		padding: 5px;
+		@extend .font;
+	}
+	.button.usual {
+		margin: 0;
+		@extend .usual-button;
+	}
+	.button.active:hover { color: $active; }
+	.icon { @include sq($win-top-h); }
+	.field {
+		width: calc(100% - 10px);
+		outline: 2px dashed #bbb;
+		padding: 20px 5px;
+		margin: 10px 0;
+		@extend .flex-center;
+		justify-content: center;
+	}
+}

@@ -1,0 +1,26 @@
+.error {
+	position: fixed;
+	height: calc(100vh - 28px);
+	width: 100vw;
+	top: 28px;
+	left: 0;
+	background: rgba(0, 0, 0, 0.5);
+	display: none;
+	justify-content: center;
+	align-items: center;
+
+	.message {
+		width: 40vw;
+		background: rgba(255, 255, 255, 0.8);
+		text-align: center;
+		user-select: text;
+	}
+	.button {
+		width: 50px;
+		margin: 10px auto;
+		font-size: 20px;
+	}
+	.button:hover {
+		color: $active;
+	}
+}

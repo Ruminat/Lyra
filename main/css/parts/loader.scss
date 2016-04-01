@@ -1,0 +1,37 @@
+$loaderW: 180px;
+@mixin setUp($r, $color, $s) {
+	@include sq($r);
+	left: calc(#{$loaderW} / 2 - #{$r} / 2);
+	top: calc(#{$loaderW} / 2 - #{$r} / 2);
+	border-top: 3px solid $color;
+	animation-duration: $s;
+}
+@keyframes spin{
+	0%{ transform: rotate(0deg); }
+	100%{ transform: rotate(360deg); }
+}
+
+.loader {
+	@include sq($loaderW);
+	position: absolute;
+	left: calc(50vw - #{$loaderW} / 2);
+	top: calc(50vh - #{$loaderW} / 2 + #{$topH});
+	@extend .flex-center;
+	justify-content: center;
+
+	.line {
+		position: absolute;
+		@include sq(100px);
+		border-radius: 100%;
+		background: none;
+		animation-iteration-count: infinite;
+		animation-timing-function: linear;
+		animation-name: spin;
+	}
+
+	#r { @include setUp($loaderW * 0.8, #C73D47, 1.2s); }
+	#g { @include setUp($loaderW * 0.7, #3DC747, 1s); }
+	#b { @include setUp($loaderW * 0.6, #3D47C7, 0.8s); }
+
+	.loading { @extend .font; }
+}

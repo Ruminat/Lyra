@@ -1,0 +1,22 @@
+.right-menu {
+	width: $right-menu;
+	height: calc(100vh - #{$topH} - #{$playerH});
+	right: 0;
+	@extend .mrWhite;
+
+	.search, .playlists {
+		width: 100%;
+	}
+	.search {
+		height: $top-menuH - 2px;
+	}
+
+	.playlists {
+		height: calc(100% - #{$top-menuH} + 2px);
+
+		h5 {
+			margin-bottom: 5px;
+		}
+	}
+	.playlist { @extend .usual-button; }
+}

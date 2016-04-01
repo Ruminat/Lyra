@@ -1,0 +1,44 @@
+.player {
+$diff: 5px;
+	width: 100vw;
+	height: $playerH;
+	position: fixed;
+	bottom: 0;
+	color: $white;
+	@extend .mrBlack;
+	@extend .font;
+
+	.bottom, .info {
+		display: flex;
+		align-items: center;
+	}
+	.info {
+		margin-top: $diff;
+		width: 100%;
+		height: ($playerH * (2 / 5));
+		display: flex;
+	}
+	.time {
+		width: 40px;
+		margin: 0 20px;
+	}
+	#time-end {
+		flex-grow: 1;
+	}
+	.title {
+		@extend .ellipsis;
+	}
+
+	.bottom {
+		width: 100%;
+		height: ($playerH * (3 / 5)) - $diff;
+	}
+	.progress {
+		width: calc(100% - 40px);
+		margin: 0 20px;
+	}
+	.line {
+		width: 0;
+		// transition: 1s linear;
+	}
+}

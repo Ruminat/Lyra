@@ -1,0 +1,21 @@
+@import 'parts/classes';
+@import 'parts/fonts';
+
+.main {
+	position: fixed;
+	top: 28px;
+}
+.background {
+	// background-image: url('../img/png-jpg/1650508.jpg');
+	// opacity: 0.2;
+}
+
+@import 'parts/common';
+@import 'parts/top';
+@import 'parts/error';
+@import 'parts/top-menu';
+@import 'parts/right-menu';
+@import 'parts/player';
+@import 'parts/menu';
+@import 'parts/songs';
+@import 'parts/win';

@@ -1,0 +1,90 @@
+.menu {
+	width: $menuWidth;
+	padding: 0 10px;
+	height: calc(100vh - #{$topH} - #{$playerH});
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	color: $white;
+	@extend .mrBlack;
+	@extend .font;
+
+	.album {
+		width: 210px;
+		height: 210px;
+		margin: 20px 0;
+		background-size: cover;
+	}
+
+	.artist, .title {
+		height: 20px;
+		width: 100%;
+		text-align: center;
+		opacity: 0;
+		@extend .ellipsis;
+	}
+
+	.controls, .sound {
+		display: flex;
+		align-items: center;
+		margin: 3px auto;
+	}
+
+	.active-low * {
+		fill: $active-low;
+	}
+	.active-low:hover * {
+		fill: $active;
+	}
+
+	.icon-wrap {
+		width: 30px;
+		height: 20px;
+	}
+	svg, #play-pause {
+		@include sq(20px);
+		fill: $white;
+		margin: 0 5px;
+	}
+	svg:hover {
+		fill: $active-low;
+	}
+	svg:active {
+		fill: $active;
+	}
+	.arrows {
+		@include sq(14px);
+	}
+	#play-pause svg {
+		margin: 0;
+	}
+	#pause {
+		display: none;
+	}
+	
+	$soundW: 10 * 5 + 20 * 3 + 14 * 2;
+	.sound {
+		width: 100%;
+		height: 20px;
+	}
+	.left {
+		margin-left: 5px;
+	}
+
+	.volume, .value {
+		width: calc( ( #{$menuWidth} - #{$soundW}px + 10px ) / 2);
+	}
+	.progress, .line {
+		height: 4px;
+	}
+	.progress {
+		flex-grow: 1;
+	}
+	.line {
+		width: 100%;
+	}
+
+	.value {
+		font-size: 14px;
+	}
+}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Авторизация</title>
+	<link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+	<div class="background"></div>
+	<% var settings = false %>
+	<% include templates/top %>
+
+	<div class="main">
+		<div class="login">
+			<h1>Авторизация</h1>
+			<div class="icon"><% include svg/vk %></div><div class="button" id="vk-in"><p>Войти с ВКонтакте</p></div>
+			<div class="icon"><% include svg/laptop %></div><div class="button" id="off-in"><p>Слушать музыку оффлайн</p></div>
+		</div>
+		<% include templates/loader %>
+	</div>
+	
+	<% include templates/error %>
+	
+	<script src="../js/functions.js"></script>
+	<script src="../js/requirements.js"></script>
+	<script src="../js/authentication.js"></script>
+</body>
+</html>

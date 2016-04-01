@@ -1,0 +1,93 @@
+canvas, .songs {
+	position: absolute;
+	transition: opacity 0.2s ease;
+}
+canvas {
+	width: calc(100vw - 20px - (#{$menuWidth} + #{$right-menu}));
+	height: calc(100vh - #{$topH} - #{$playerH});
+	left: $menuWidth + 20px;
+	opacity: 1;
+}
+.songs, #audio-dropArea {
+	position: absolute;
+	width: calc(100vw - 20px - (#{$menuWidth} + #{$right-menu}));
+	height: calc(100vh - #{$topH} - #{$playerH} - #{$top-menuH});
+	left: $menuWidth + 20px;
+	top: $top-menuH;
+}
+
+
+.songs{
+	overflow: hidden;
+	color: $black;
+	opacity: 0.5;
+	@extend .mrWhite;
+
+	.song:hover { @extend .mrPale; }
+
+	li {
+		height: 18px;
+		padding: 5px;
+		@extend .ellipsis;
+		@extend .font;
+		@extend .interface;
+	}
+	
+	.check { 
+		width: 0; 
+		padding: 0;
+		border: none;
+	}
+	.title, .artist { width: calc(50% - 35px); }
+	.duration {
+		width: 40px;
+		text-align: right;
+	}
+
+	.empty {
+		@extend .font;
+		width: 100%;
+		height: 30px;
+		position: absolute;
+		top: 45%;
+		
+		p {
+			font-size: 24px;
+			text-align: center;
+			color: #aaa;
+		}
+	}
+
+	.active {
+		.check {
+			background-image: url('../img/png-jpg/check.png');
+		}
+	}
+	.pick {
+		.check {
+			@include sq(16px);
+			padding: 5px;
+			border: 1px solid rgba(0, 0, 0, 0.05);
+			margin-left: 5px;
+			background-size: 14px;
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+		.title, .artist { width: calc(50% - 52px); }
+	}
+	.pick.no-artist {
+		.title {
+			width: calc(100% - 96px);
+		}
+	}
+}
+.no-artist {
+	.title {
+		width: calc(100% - 60px);
+	}
+}
+
+#audio-dropArea {
+	background: none;
+	display: none;
+}

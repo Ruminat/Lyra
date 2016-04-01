@@ -1,0 +1,63 @@
+@import 'parts/classes';
+@import 'parts/common';
+@import 'parts/top';
+@import 'parts/error';
+@import 'parts/fonts';
+@import 'parts/loader';
+
+.main {
+	@extend .flex-center;
+	justify-content: center;
+}
+
+.background {
+	background-image: url('../img/png-jpg/headphones.jpg');
+	opacity: 0.4;
+}
+
+.button {
+	width: 250px;
+	height: 32px;
+	@extend .flex-center;
+	/*I don't know why this crap doesn't work with line-height: 32px;*/
+	justify-content: center;
+	border-radius: 3px;
+	text-align: center;
+	margin-bottom: 10px;
+	@extend .mrWhite;
+	@extend .interface;
+}
+.button p {
+	font: 20px 'Scada';
+}
+.button:hover {
+	background: rgba(255, 255, 255, 0.6);
+}
+.button:active {
+	background: rgba(255, 255, 255, 0.8);
+}
+
+.login {
+	display: none;
+	min-width: 400px;
+	width: 60vw;
+	min-height: 200px;
+	height: 25vh;
+	@extend .interface;
+
+	.icon {
+		margin-bottom: 5px;
+	}
+
+	.icon, .button {
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+#vk-in-icon {
+	background-image: url('../img/vk.svg');
+}
+#off-in-icon {
+	background-image: url('../img/laptop.svg');
+}

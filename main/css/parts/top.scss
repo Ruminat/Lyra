@@ -1,0 +1,69 @@
+.top {
+	$rightCount: 3;
+	$leftCount: 3;
+	$iconMargin: 4;
+
+	width: 100vw;
+	height: $topH;
+	position: fixed;
+	background: rgba(255, 255, 255, 0.5);
+	-webkit-app-region: drag;
+
+	*{
+		-webkit-app-region: no-drag;
+	}
+
+	.left, .right, .name{
+		height: $topH - 5px;
+		padding-top: 4px;
+		padding-bottom: 1px;
+	}
+
+	.left, .right {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-around;
+	}
+	.left {
+		justify-content: flex-start;
+	}
+
+	.right {
+		width: ((20 + $iconMargin) * $rightCount)#{"px"};
+		margin-right: 4px;
+	}
+ 
+ 	.name {
+			float: left;
+			padding-left: 4px;
+			font: 20px 'PT sans', trebuchet MS, georgia, verdana;
+			margin: 0;
+			color: $black;
+		}
+	.left {
+		width: ((24 + $iconMargin) * $leftCount)#{"px"};
+
+		.icon {
+			margin-right: 0;
+			margin-left: $iconMargin#{"px"};
+		}
+	}
+	.icon {
+		@include sq(20px);
+	}
+
+	.outline {
+		stroke: $black;
+	}
+	.fill {
+		fill: $black;
+	}
+	svg:hover {
+		fill: $active-low;
+		stroke: $active-low;
+	}
+	svg:active {
+		fill: $active;
+		stroke: $active;
+	}
+}

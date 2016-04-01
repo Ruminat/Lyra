@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Lyra</title>
+	<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+	<div class="background"></div>
+	<% var settings = true %>
+	<% include templates/top %>
+
+	<div class="main">
+		<canvas id="canvas"></canvas>
+		<% include templates/songs %>
+		<% include templates/top-menu %>
+		<% include templates/menu %>
+		<% include templates/player %>
+		<% include templates/right-menu %>
+
+		<div class="context-menu"></div>
+		<div class="tip"><div>Some tip</div></div>
+
+		<div class="win">
+			<div class="content">
+				<div class="content-top">
+					<% var ID = 'close-win'; %>
+					<div class="right"><% include svg/close %></div>
+				</div>
+				<div class="editable">
+					<h4 class="title">Прикрепление папок</h4>
+				</div>
+			</div>
+		</div>
+
+		<div id="audio-dropArea"></div>
+	</div>
+	
+	<% include templates/error %>
+
+	<audio id="audio"></audio>
+
+	<script src="../js/functions.js"></script>
+	<script src="../js/requirements.js"></script>
+	<script src="../js/main.js"></script>
+</body>
+</html>
