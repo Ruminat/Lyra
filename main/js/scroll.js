@@ -4,19 +4,21 @@ function scroll(parentScrollID, scrollerID, wrapperID, mouse, funcs) {
 		var up   = isSet(funcs[1]) ? funcs[1] : function(){};
 	} else { down = up = function(){}; }
 
-	var that = this;
+	var that    = this;
 	var $scroll = $('#'+ scrollerID);
 	var $parent = $('#'+ parentScrollID);
-	var $wrap = $('#'+ wrapperID);
-	var wrap = document.getElementById(wrapperID);
-	var scroll = document.getElementById(scrollerID);
-	mouse.move = function(){};
+	var $wrap   = $('#'+ wrapperID);
+	var wrap    = document.getElementById(wrapperID);
+	var scroll  = document.getElementById(scrollerID);
+	mouse.move  = function(){};
 
 	var space = function() { return wrap.scrollHeight - $wrap.height(); };
 	var height = function() { return $parent.height() - $scroll.height(); };
 
+	$(document).mouseup(function() { up(); });
+
 	$scroll.mousedown(function(e) {
-		mouse.up = up;
+		$('.select').addClass('no-select');
 		down();
 
 		mouse.startY = e.pageY;

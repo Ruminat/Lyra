@@ -183,14 +183,17 @@
 		<canvas id="canvas"></canvas>
 		<div class="songs" id="songs">
 	<div class="empty"><p>Бросьте сюда вашу музыку</p></div>
-	<div class="wrapper" id="songs-wrap">
-	</div>
+	<div class="wrapper" id="songs-wrap"></div>
 	<div class="scroll-parent" id="songs-scroll">
 		<div class="scroll" id="songs-scroller"></div>
 	</div>
 </div>
 		<div class="top-menu">
 	<div class="songsStuff">
+		<div class="search">
+			<input id="search-box" type="text" placeholder="Поиск">
+		</div>
+
 		<div class="addSongs">
 			<div class="pickAll with-tip" data="Выбрать все"></div>
 			<div id="push-songs" class="button green-BG">Добавить</div>
@@ -333,11 +336,11 @@
 		<div class="menu">
 	<div class="album"></div>
 
-	<div class="artist">invisible</div>
-	<div class="title">invisible</div>
+	<div class="artist select">invisible</div>
+	<div class="title select">invisible</div>
 
 	<div class="controls">
-		<div class="icon-wrap" id="repeat"><svg class="with-tip" data="Играть эту песню" id="repeat" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+		<div class="icon-wrap" id="repeat"><svg class="with-tip" data="Повторять эту аудиозапись" id="repeat" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="155.724px" height="155.723px" viewBox="0 0 155.724 155.723" style="enable-background:new 0 0 155.724 155.723;"
 	 xml:space="preserve">
 <g>
@@ -667,7 +670,7 @@
 	<!-- <canvas id="canvas"></canvas> -->
 	<div class="info">
 		<div class="time" id="time-current"></div>
-		<div class="title"></div>
+		<div class="title select"></div>
 		<div class="time" id="time-end"><p class="right"></p></div>
 	</div>
 
@@ -678,11 +681,88 @@
 	</div>
 </div>
 		<div class="right-menu">
-	<div class="search"></div>
+	<div class="search">
+		
+		<div class="h-wrap flex-center">
+			<h6 class="active" id="search-parameters-shower">Параметры поиска <?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg class="icon" id=show-search-parameters version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="451.847px" height="451.847px" viewBox="0 0 451.847 451.847" style="enable-background:new 0 0 451.847 451.847;"
+	 xml:space="preserve">
+<g>
+	<path d="M225.923,354.706c-8.098,0-16.195-3.092-22.369-9.263L9.27,151.157c-12.359-12.359-12.359-32.397,0-44.751
+		c12.354-12.354,32.388-12.354,44.748,0l171.905,171.915l171.906-171.909c12.359-12.354,32.391-12.354,44.744,0
+		c12.365,12.354,12.365,32.392,0,44.751L248.292,345.449C242.115,351.621,234.018,354.706,225.923,354.706z"/>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+</h6>
+		</div>
+		<div class="info">
+			<p class="center" id="srch-total-found"></p>
+		</div>
+		<div class="container" id="search-container">
+			<h6>Поиск по</h6>
+			<div class="artist-title">
+				<div class="item checked" id="srch-radio-title"><div class="title radio-check"><div class="checker"></div></div><p>Композициям</p></div>
+				<div class="item" id="srch-radio-artist"><div class="artist radio-check"><div class="checker"></div></div><p>Исполнителям</p></div>
+			</div>
+			<div class="dividing-line"></div>
+			<div class="sort">
+				<h6>Сортировать по</h6>
+				<div class="choose">
+					<div class="item checked"><div class="popularity radio-check"><div class="checker"></div></div><p>Популярности</p></div>
+					<div class="item"><div class="duration radio-check"><div class="checker"></div></div><p>Длительности</p></div>
+					<div class="item"><div class="date radio-check"><div class="checker"></div></div><p>Дате добавления</p></div>
+				</div>
+			</div>
+			<div class="dividing-line"></div>
+			<div class="item"><div class="check" id="srch-text-only"></div><p>Только с текстом</p></div>
+		</div>
+	</div>
 
 	<div class="playlists">
 		<h5>Альбомы</h5>
 		<div class="playlist" id="add-playlist">Добавить альбом</div>
+		<div class="waiting">
+			
+			<div class="loader">
+	<div class="line" id="r"></div>
+	<div class="line" id="g"></div>
+	<div class="line" id="b"></div>
+	<div class="loading">Обработка</div>
+</div>
+		</div>
 	</div>
 </div>
 
@@ -690,10 +770,10 @@
 		<div class="tip"><div>Some tip</div></div>
 
 		<div class="win">
-			<div class="content">
-				<div class="content-top">
-					
-					<div class="right"><svg class="icon fill" id=close-win version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	<div class="content">
+		<div class="content-top">
+			
+			<div class="right"><svg class="icon fill" id=close-win version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 224.512 224.512" style="enable-background:new 0 0 224.512 224.512;" xml:space="preserve">
 <g>
 	<polygon points="224.507,6.997 217.521,0 112.256,105.258 6.998,0 0.005,6.997 105.263,112.254 
@@ -731,12 +811,17 @@
 </g>
 </svg>
 </div>
-				</div>
-				<div class="editable">
+		</div>
+		<div class="bot">
+			<div class="editable">
+				<div class="wrapper" id="win-wrap">
 					<h4 class="title">Прикрепление папок</h4>
 				</div>
 			</div>
+			<div class="scroll-parent" id="win-scroll"><div class="scroll" id="win-scroller"></div></div>
 		</div>
+	</div>
+</div>
 
 		<div id="audio-dropArea"></div>
 	</div>

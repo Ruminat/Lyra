@@ -1,12 +1,17 @@
 function range(dynamic, mouse, rangeID, lineID, upFunc, move) {
-	var $range = $('#'+ rangeID);
-	var $line = $('#'+ lineID);
-	var range = document.getElementById(rangeID);
-	var edgeLeft = range.getBoundingClientRect().left;
+	var $range    = $('#'+ rangeID);
+	var $line     = $('#'+ lineID);
+	var range     = document.getElementById(rangeID);
+	var edgeLeft  = range.getBoundingClientRect().left;
 	var edgeRight = edgeLeft + range.getBoundingClientRect().width;
 	
+	if (isSet(upFunc)) {
+		$range.mouseup(function() {
+			upFunc();
+		});
+	}
+	
 	$range.mousedown(function(e) {
-		mouse.up = upFunc;
 
 		mouse.move = function(e) {
 			if (e.pageX > edgeRight) {

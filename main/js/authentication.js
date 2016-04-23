@@ -10,11 +10,13 @@ $(document).ready(function() {
 	};
 	var vk = {};
 	var win = remote.getCurrentWindow();
-	var ui = new interface(win, data);
+	var ui = new Interface(win, data);
 
 	//If user have internet connection
 	if (data.connection) {
 		logVk(false);
+	} else {
+		showWindow();
 	}
 	$('#vk-in').click(function() { 
 		if (data.connection) {
@@ -24,7 +26,7 @@ $(document).ready(function() {
 	$('#vk-in-icon').click(function() { 
 		if (data.connection) {
 			logVk(true);
-		} 
+		}
 	});
 	$('#off-in').click(function() { openMain('file://' + __dirname + '/index.html#DATA:offline'); });
 	$('#off-in-icon').click(function() { openMain('file://' + __dirname + '/index.html#DATA:offline'); });
@@ -48,9 +50,7 @@ $(document).ready(function() {
 					cryingOutForError('По-видимому, проблема с ВКонтакте. Повторите попытку через несколько минут.');
 				}
 			} else {
-				$('.loader').css('display', 'none');
-				$('.login').css('display', 'block');
-				win.show();
+				showWindow();
 				if (vkShow) vk.win.show();
 			}
 		});
@@ -62,15 +62,16 @@ $(document).ready(function() {
 		+'scope=audio,friends,status&response_type=token&v=5.40');
 	}
 
+	function showWindow() {
+		$('.loader').css('display', 'none');
+		$('.login').css('display', 'block');
+		win.show();
+	}
 	function openMain(url) {
 		closeVK();
 
-		// var main = new BrowserWindow({width: 1200, height: 800, frame: false, show: true});
-		// main.loadUrl(url);
-		// main.openDevTools();
 		win.loadUrl(url);
 		win.removeAllListeners();
-		// win.close();
 	}
 	function closeVK() {
 		if (vk.win) {

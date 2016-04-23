@@ -14,8 +14,8 @@ $loaderW: 180px;
 .loader {
 	@include sq($loaderW);
 	position: absolute;
-	left: calc(50vw - #{$loaderW} / 2);
-	top: calc(50vh - #{$loaderW} / 2 + #{$topH});
+	left: calc(50% - #{$loaderW} / 2);
+	top: calc(50% - #{$loaderW} / 2 + #{$topH});
 	@extend .flex-center;
 	justify-content: center;
 
@@ -29,9 +29,13 @@ $loaderW: 180px;
 		animation-name: spin;
 	}
 
-	#r { @include setUp($loaderW * 0.8, #C73D47, 1.2s); }
-	#g { @include setUp($loaderW * 0.7, #3DC747, 1s); }
-	#b { @include setUp($loaderW * 0.6, #3D47C7, 0.8s); }
+	// #r { @include setUp($loaderW * 0.8, #C73D47, 1.2s); }
+	// #g { @include setUp($loaderW * 0.7, #3DC747, 1s);   }
+	// #b { @include setUp($loaderW * 0.6, #3D47C7, 0.8s); }
+
+	#r { @include setUp($loaderW * 0.8, $active, 1.2s); }
+	#g { @include setUp($loaderW * 0.7, $green, 1s);   }
+	#b { @include setUp($loaderW * 0.6, $black, 0.8s); }
 
 	.loading { @extend .font; }
 }

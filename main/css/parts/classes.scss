@@ -3,6 +3,13 @@
 	width: $a;
 	height: $a;
 }
+@mixin bgSize($size) {
+	background-size: $size;
+	@extend .bg-center;
+}
+@mixin img($url) {
+	background-image: url($url);
+}
 
 $active-low: #EB9486;
 $active: #FB8476;
@@ -10,6 +17,7 @@ $white: #F3F3F3;
 $black: #2F2F2F;
 $green-low: #A7E8BD;
 $green: #97F5AD;
+$inactive-C: rgba(0,0,0, 0.5);
 
 $playerH: 42px;
 $menuWidth: 230px;
@@ -19,7 +27,7 @@ $topH: 28px;
 
 .mrWhite { background: rgba(255, 255, 255, 0.3); }
 .mrBlack { background: rgba(0, 0, 0, 0.8); }
-.mrPale { background: rgba(0, 0, 0, 0.05); }
+.mrPale { background: rgba(0, 0, 0, 0.03); }
 .interface {
 	-webkit-user-select: none;
 	cursor: default;
@@ -33,6 +41,10 @@ $topH: 28px;
 	display: flex;
 	align-items: center;
 	// justify-content: center;
+}
+.bg-center {
+	background-repeat: no-repeat;
+	background-position: center;
 }
 .ellipsis {
 	overflow: hidden;

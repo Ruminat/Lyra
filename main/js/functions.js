@@ -8,7 +8,7 @@ function random(min, max) {
 function dirToRight(dir) {
   var newDir = "";
   for (var c = 0; c < dir.length; c++) {
-    if (dir.charAt(c) == "\\"){
+    if (dir.charAt(c) == "\\") {
       newDir += "/";
     } else {
       newDir += dir.charAt(c);
@@ -26,19 +26,49 @@ function cryingOutForError(reason) {
   $('.error').css('display', 'flex');
   $('.error .reason').text(reason);
 }
+//Formats number in 618,228,285 style
+function formatNumber(num) {
+  var s = num.toString();
+  var result = s.substr(s.length - 1, 1), i = 1;
+  for (var c = s.length - 2; c >= 0; c--) {
+    result += (i % 3 == 0) ? ','+ s[c] : s[c];
+    i++;
+  }
+  result = result.split('').reverse().join('');
+  return result;
+}
 //Parse seconds in format like 6:18
-function parseSec(sec){
+function parseSec(sec) {
   var mins = Math.floor(sec / 60);
-  var seconds = Math.floor(sec - mins * 60);
-  if (seconds < 10){
+  var seconds = Math.round(sec - mins * 60);
+  if (mins >= 60) {
+    mins = parseSec(mins);
+  }
+  if (seconds < 10) {
     return mins.toString() +":0"+ seconds.toString();
   } else {
     return mins.toString() +":"+ seconds.toString();
   }
 }
+// function check() {
+//   var r = random(0, 10000) / 19;
+//   console.log(r +' '+ parseSec(r));
+// }
+// check();
+// check();
+// check();
+// check();
+// check();
 //Parse format 2:28 to seconds
 function parseTime(time) {
-  return parseInt(time.split(':')[0]) * 60 + parseInt(time.split(':')[1]);
+  var parts = time.split(':');
+  var mult  = 1;
+  var sec   = 0;
+  for (var c = parts.length - 1; c >= 0; c--) {
+    sec  += parseInt(parts[c]) * mult;
+    mult *= 60;
+  }
+  return sec;
 }
 
 //Sort functions
@@ -80,7 +110,7 @@ function compare(a, b) {
   }
 }
 function shuffle(arr, pos) {
-  for (var c = pos || 0; c < arr.length; c++){
+  for (var c = pos || 0; c < arr.length; c++) {
     var elem = random(pos || 0, arr.length - 1);
     var t = arr[elem];
     arr[elem] = arr[c];

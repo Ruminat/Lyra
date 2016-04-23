@@ -15,17 +15,30 @@ $win-top-h: 20px;
 		width: 100%;
 		height: $win-top-h;
 	}
-	h4 {
-		margin-bottom: 10px;
+	h4  { margin-bottom: 10px; }
+	pre { 
+		text-align: left;
+		@extend .font; 
 	}
 
 	.content {
 		width: 50vw;
+		max-height: 80vh;
 		padding: 5px;
-		background: rgba(255, 255, 255, 0.8);
+		background: $white;
 		text-align: center;
 	}
-	.error { -webkit-user-select: text; }
+	.bot { 
+		display: flex; 
+		width: 100%;
+	}
+	.editable {
+		max-height: calc(80vh - #{$win-top-h});
+		width: 100%;
+		overflow: hidden;
+	}
+	.wrapper { max-height: calc(80vh - #{$win-top-h}); }
+	// .error, pre { -webkit-user-select: text; }
 	.button {
 		margin: 5px;
 		display: inline-block;
@@ -39,11 +52,20 @@ $win-top-h: 20px;
 	.button.active:hover { color: $active; }
 	.icon { @include sq($win-top-h); }
 	.field {
-		width: calc(100% - 10px);
-		outline: 2px dashed #bbb;
+		width: calc(100% - 14px);
+		border: 2px dashed #bbb;
 		padding: 20px 5px;
 		margin: 10px 0;
 		@extend .flex-center;
 		justify-content: center;
 	}
+}
+
+#win-scroll {
+	position: relative;
+	max-height: calc(80vh - #{$win-top-h});
+}
+#win-scroller {
+	position: relative;
+	right: 0;
 }

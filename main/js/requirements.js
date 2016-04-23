@@ -5,4 +5,4 @@ var remote = require('electron').remote;
 var app = remote.app;
 var BrowserWindow = remote.BrowserWindow;
 //My modules
-var interface = require('./../js/ui.js');
+var Interface = require('./../js/ui.js');

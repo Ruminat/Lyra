@@ -5,7 +5,7 @@ function playlists(data) {
 		data.playlists.num++;
 		var id = 'playlist-'+ data.playlists.num;
 
-		$(this).before('<div class="playlist" id="'+ id +'"><input type="text"></div>');
+		$(this).before('<div class="playlist" id="'+ id +'"><input type="text" placeholder="Название"></div>');
 		
 		id = '#' + id;
 		var input = id + ' input';
@@ -17,7 +17,10 @@ function playlists(data) {
 	$('.playlists').on('click', '.playlist', function() {
 		var id = $(this).context.id;
 		if (id != 'add-playlist' && id != 'my-audio') {
+			$('#srch-total-found').text('');
+			that.startLoad('with-songs');
 			var num = parseInt(id.substr(9, id.length));
+			that.turnPlaylist(id);
 			storage.read(data.files.playlists, function(obj) {
 				var playlist = obj.lists[num];
 				var model = '';
@@ -26,7 +29,8 @@ function playlists(data) {
 				player.emptySongs();
 
 				playlist.list.forEach(function(item, i, arr) {
-					model += player.songHtml(item.type, item.id, item.url, item.title, item.artist, item.duration);
+					var options = {delete: true};
+					model += player.songHtml(item.type, item.id, item.url, item.title, item.artist, item.duration, '', options);
 					player.add(item.type +'-'+ item.id);
 				});
 
@@ -40,66 +44,68 @@ function playlists(data) {
 				if (album != '') {
 					vk.request('audio.get', 'album_id='+ album, function(res) {
 						if (isSet(res)) {
-							res.response.items.forEach(function(item, i, arr) {
-								model += player.songHtml('vk', item.id, item.url, item.title, item.artist, parseSec(item.duration));
-								player.add('vk-'+ item.id);
-							});
+							model += vk.addSongs(res.response.items);
 						}
 						applyModel(model);
+						that.stopLoad('with-songs');
 					});
 
-				} else { applyModel(model); }
-				
+				} else { 
+					applyModel(model);
+					that.stopLoad('with-songs');
+				}
 			});
 		} else if (id == 'my-audio') {
+			that.turnPlaylist(id);
+			$('#srch-total-found').text('');
 			vk.getAudio();
+			data.state = 'vk';
 		}
 	});
 	$('.playlists').on('contextmenu', '.playlist', function(e) {
 		var id = $(this)[0].id;
 		var elem = $('#'+ id);
 		if (id != 'add-playlist' && id != 'my-audio') {
-			var html = '';
-			var sections = [
-				['edit',    'Редактировать'],
-				['add',     'Добавить музыку'],
-				['current', 'Добавить текущую музыку'],
-				['folder',  'Прикрепить папку'],
-				['delete',  'Удалить альбом']
-			];
-			for (var c = 0; c < sections.length; c++){
+			var srch = data.state == 'search';
+			var sections = [];
+			sections.push(['edit',    'Редактировать']);
+			mainUI.inActive(!srch, sections, 'add',     'Добавить музыку');
+			mainUI.inActive(!srch, sections, 'current', 'Добавить текущую музыку');
+			sections.push(['folder',  'Прикрепить папку']);
+			sections.push(['delete',  'Удалить альбом']);
+			/*for (var c = 0; c < sections.length; c++){
 				html += '<div class="'+ sections[c][0] +'"><div>'+ sections[c][1] +'</div></div>';
 			}
-			ctxMenu.html(html);
-			mainUI.callMenu(e);
+			ctxMenu.html(html);*/
 
-			var m = '.context-menu';
-			$(m + ' .edit').click(function() {
-				var txt = elem.text();
-				elem.html('<input type="text">');
-				$('#'+ id + ' input').val(txt);
-				inputEvent('#'+ id + ' input', '#'+ id, editPlaylist);
+			mainUI.setUpMenu(e, sections, function() {
+				var m = '.context-menu';
+				$(m + ' .edit').click(function() {
+					var txt = elem.text();
+					elem.html('<input type="text">');
+					$('#'+ id + ' input').val(txt);
+					inputEvent('#'+ id + ' input', '#'+ id, editPlaylist);
 
-				mainUI.focus('#'+ id + ' input');
+					mainUI.focus('#'+ id + ' input');
+				});
+				$(m + ' .add').click(function()     { addParticular(id);  });
+				$(m + ' .current').click(function() { addCurrent(id);     });
+				$(m + ' .folder').click(function()  { stickFolder(id);    });
+				$(m + ' .delete').click(function()  { deletePlaylist(id); });
 			});
-			$(m + ' .add').click(function()     { addParticular(id);  });
-			$(m + ' .current').click(function() { addCurrent(id);     });
-			$(m + ' .folder').click(function()  { stickFolder(id);    });
-			$(m + ' .delete').click(function()  { deletePlaylist(id); });
 		}
 	});
 
 	this.sortSongInfo = function(elem, list, IDs) {
 		var info = player.getSongData(elem);
-		var type = info.id.substr(0, 2);
 		var id = info.id.substr(3, info.id.length);
-		if (type == 'pc') {
+		if (info.type == 'pc') {
 			list.push({
-				type: type,
-				id: id, 
-				url: info.url, 
-				title: info.title,
-				artist: info.artist, 
+				id:       id,
+				url:      info.url,
+				type:     info.type,
+				title:    info.title,
+				artist:   info.artist, 
 				duration: info.duration
 			});
 		} else {
@@ -112,6 +118,7 @@ function playlists(data) {
 		}
 	}
 	this.addSongs = function(songs, playlist, vkSongs) {
+		that.startLoad();
 		var id = parseInt(playlist.substr(9, playlist.length));
 		storage.read(data.files.playlists, function(obj) {
 			var playlist = obj.lists[id];
@@ -142,31 +149,45 @@ function playlists(data) {
 				var c = 0;
 				send(c);
 				obj.lists[id].owner = data.vk.id;
-			}
+			} else { that.stopLoad(); }
 			writeToPlaylists(obj); 
 
 			function send(c) {
 				var songs = vkSongs[c].join(',');
-				vk.request('audio.moveToAlbum', 'album_id='+ album +'&audio_ids='+ songs);
+				vk.request('audio.add', 'album_id='+ album +'&audio_ids='+ songs);
 				if (c < (vkSongs.length - 1)) {
 					setTimeout(function() { send(c + 1); }, 2000);
 				} else {
-					console.log('done!');
+					that.stopLoad();
 				}
 			}
+		}
+	}
+	this.startLoad = function(withSongs) {
+		data.playlists.state = 'loading';
+		if (isSet(withSongs)) mainUI.ui.songs.state = 'loading';
+		$('.playlists .waiting').addClass('on');
+	}
+	this.stopLoad = function(withSongs) {
+		data.playlists.state = 'idle';
+		if (isSet(withSongs)) mainUI.ui.songs.state = 'idle';
+		$('.playlists .waiting').removeClass('on');
+	}
+	this.turnPlaylist = function(id) {
+		$('.playlist').removeClass('activeC');
+		if (isSet(id)) {
+			$(`#${id}`).addClass('activeC');
 		}
 	}
 
 	function inputEvent(elem, id, act) {
 		$(elem).blur(function() {
 			check();
-			data.typing = false;
 		});
 		$(elem).keydown(function(e) {
 			//enter || esc
 			if (e.keyCode == 13 || e.keyCode == 27) {
 				check();
-				data.typing = false;
 			}
 		});
 
@@ -286,7 +307,7 @@ function playlists(data) {
 			html += '<div class="button green-BG" id="folders-save">Сохранить</div>';
 			html += '<div class="button red-BG" id="folders-cancel">Отмена</div>';
 
-			$('.win .editable').html(html);
+			$('#win-wrap').html(html);
 
 			$('.button.usual').contextmenu(function(e) {
 				var elem = $(this);
@@ -335,26 +356,29 @@ function playlists(data) {
 	function applyModel(model) {
 		$('#songs-wrap').append(model);
 		player.stats.call();
-		player.songsScroll();
+		data.state = 'playlist';
 	}
 
-	storage.read(data.files.playlists, function(obj) {
-		if (isSet(data.vk)) {
-			$('#add-playlist').before('<div class="playlist" id="my-audio">Мои Аудиозаписи</div>');
-		}
-		data.playlists.list = obj.lists;
-
-		for (var c = 0; c < obj.lists.length; c++){
-			data.playlists.num++;
-			var owner = obj.lists[c].owner;
-
-			if (owner == '' || (isSet(data.vk) && owner == data.vk.id)) {
-				var id = data.playlists.num;
-				var name = obj.lists[c].name;
-				$('#add-playlist').before('<div class="playlist" id="playlist-'+ id +'">'+ name +'</div>');
+	this.initialize = function() {
+		storage.read(data.files.playlists, function(obj) {
+			if (isSet(data.vk)) {
+				$('#add-playlist').before('<div class="playlist" id="my-audio">Мои Аудиозаписи</div>');
+				that.turnPlaylist('my-audio');
 			}
-		}
-	});
+			data.playlists.list = obj.lists;
+
+			for (var c = 0; c < obj.lists.length; c++){
+				data.playlists.num++;
+				var owner = obj.lists[c].owner;
+
+				if (owner == '' || (isSet(data.vk) && owner == data.vk.id)) {
+					var id = data.playlists.num;
+					var name = obj.lists[c].name;
+					$('#add-playlist').before('<div class="playlist" id="playlist-'+ id +'">'+ name +'</div>');
+				}
+			}
+		});
+	}
 	function writeToPlaylists(obj) {
 		storage.write(data.files.playlists, JSON.stringify(obj, null, ' '));
 	}

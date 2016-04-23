@@ -10,16 +10,21 @@ function localMusic(ui) {
 	this.playlist     = -1;
 
 	songs.ondrop = function(e) {
-		var files = e.dataTransfer.files;
-		var newFiles = [];
-		var path = dirToRight(files[0].path);
-		var dir = path.split(files[0].name)[0];
-		[].forEach.call(files, function(item, i, arr) {
-			newFiles.push(item.name);
-		});
-		checkFiles(dir, newFiles);
+		if (ui.songs.state == 'idle') {
+			playlists.startLoad('with-songs');
+			var files    = e.dataTransfer.files;
+			var newFiles = [];
+			var path     = dirToRight(files[0].path);
+			var dir      = path.split(files[0].name)[0];
+			[].forEach.call(files, function(item, i, arr) {
+				newFiles.push(item.name);
+			});
+			checkFiles(dir, newFiles);
 
-		hideArea();
+			hideArea();
+		} else {
+			cryingOutForError('Дождитесь обработки аудиозаписей.');
+		}
 	}
 	songs.ondragleave = function() { hideArea(); }
 	songs.ondragover = function() { displayArea(); }
@@ -122,7 +127,9 @@ function localMusic(ui) {
 
 
 				idList.push('pc-'+ id);
-				model += player.songHtml('pc', id, url, title, artist, duration);
+				var options = {delete: true};
+				model += player.songHtml('pc', id, url, title, artist, duration, '', options);
+				// console.log(player.songHtml('pc', id, url, title, artist, duration, '', options));
 			});
 
 			for (var c = idList.length - 1; c >= 0; c--){
@@ -150,6 +157,7 @@ function localMusic(ui) {
 		}
 	}
 	function addDuration() {
+		playlists.startLoad();
 		if (that.playlist != -1 && that.foldersCheck) {
 			storage.read(data.files.playlists, function(obj) {
 				add(obj);
@@ -165,8 +173,10 @@ function localMusic(ui) {
 			var counter = 0;
 
 			dur.onloadedmetadata = function() {
-				var src = getSrc(counter);
 				var duration = parseSec(dur.duration);
+				var src = getSrc(counter);
+				p(counter).text(duration);
+
 				if (set) {
 					folders.songs.forEach(function(item, i, arr) {
 						if (src == item.url) {
@@ -174,31 +184,35 @@ function localMusic(ui) {
 						}
 					});
 				}
-				elem(counter).text(duration);
 				if (counter < playlist.length - 1) {
 					incCounter();
+					var src = getSrc(counter);
+
 					dur.src = src;
 				} else { 
 					playlist.length = 0;
-					that.checkFolders = false;
+					that.foldersCheck = false;
 					if (set) {
 						obj.lists[that.playlist].folders = folders;
 						storage.write(data.files.playlists, JSON.stringify(obj, null, ' '));
 					}
+					playlists.stopLoad('with-songs');
 				}
 			}
-			
-			incCounter();
+			// console.log(elem(counter));
 			dur.src = getSrc(counter);
 
 			function elem(counter) {
 				return $('#'+ wrap[counter].id +' .duration');
 			}
+			function p(counter) {
+				return $('#'+ wrap[counter].id +' .duration p');
+			}
 			function getSrc(counter) {
 				return wrap[counter].attributes.url.nodeValue;
 			}
 			function incCounter() {
-				while (elem(counter)[0].innerText != '' && counter < playlist.length - 1) { counter++; }
+				while (p(counter).text() != '' && counter < playlist.length - 1) { counter++; }
 			}
 		}
 	}

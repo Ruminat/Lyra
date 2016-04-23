@@ -1,8 +1,38 @@
 <div class="right-menu">
-	<div class="search"></div>
+	<div class="search">
+		<% var arrowID = 'show-search-parameters'; %>
+		<div class="h-wrap flex-center">
+			<h6 class="active" id="search-parameters-shower">Параметры поиска <% include ../svg/arrow %></h6>
+		</div>
+		<div class="info">
+			<p class="center" id="srch-total-found"></p>
+		</div>
+		<div class="container" id="search-container">
+			<h6>Поиск по</h6>
+			<div class="artist-title">
+				<div class="item checked" id="srch-radio-title"><div class="title radio-check"><div class="checker"></div></div><p>Композициям</p></div>
+				<div class="item" id="srch-radio-artist"><div class="artist radio-check"><div class="checker"></div></div><p>Исполнителям</p></div>
+			</div>
+			<div class="dividing-line"></div>
+			<div class="sort">
+				<h6>Сортировать по</h6>
+				<div class="choose">
+					<div class="item checked"><div class="popularity radio-check"><div class="checker"></div></div><p>Популярности</p></div>
+					<div class="item"><div class="duration radio-check"><div class="checker"></div></div><p>Длительности</p></div>
+					<div class="item"><div class="date radio-check"><div class="checker"></div></div><p>Дате добавления</p></div>
+				</div>
+			</div>
+			<div class="dividing-line"></div>
+			<div class="item"><div class="check" id="srch-text-only"></div><p>Только с текстом</p></div>
+		</div>
+	</div>
 
 	<div class="playlists">
 		<h5>Альбомы</h5>
 		<div class="playlist" id="add-playlist">Добавить альбом</div>
+		<div class="waiting">
+			<% var text = 'Обработка' %>
+			<% include loader %>
+		</div>
 	</div>
 </div>

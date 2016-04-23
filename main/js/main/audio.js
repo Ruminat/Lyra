@@ -65,6 +65,7 @@ function audio(data) {
 		that.elem.play();
 		player.startTiming();
 		that.playing = true;
+		mainUI.songsHover();
 	}
 	this.pause = function() {
 		$('#play').css('display', 'block');
@@ -72,6 +73,7 @@ function audio(data) {
 		that.elem.pause();
 		player.pauseTiming();
 		that.playing = false;
+		mainUI.songsHover();
 	}
 	this.toggle = function() {
 		if (that.elem.src && that.playing == false) {
@@ -104,7 +106,7 @@ function audio(data) {
 		var elem = $('#'+ playlist[id]);
 		elem.addClass('activeC-low');
 
-		player.ChangeElemSong(elem[0], elem);
+		player.ChangeElemSong(elem);
 
 		//Cleaning lines' angles
 		for (var c = 0; c < that.arcs; c++){

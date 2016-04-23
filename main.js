@@ -18,13 +18,13 @@ app.on('window-all-closed', function() {
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1200, height: 1150, frame: false, show: true});
+  mainWindow = new BrowserWindow({width: 1200, height: 800, frame: false, show: true});
 
   // and load the index.html of the app.
   mainWindow.loadUrl('file://' + __dirname + '/main/views/authentication.html');
 
   // Open the DevTools.
-  mainWindow.openDevTools();
+  // mainWindow.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {

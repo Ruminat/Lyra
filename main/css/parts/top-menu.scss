@@ -9,6 +9,15 @@
 		width: 100%;
 		height: 68px;
 	}
+	input {
+		width: calc(100% - 20px);
+		margin-left: 10px;
+		height: 20px;
+		background: #eee;
+	}
+	input:focus {
+		outline: 1px solid $green-low;
+	}
 
 	.button {
 		display: inline;
@@ -18,7 +27,7 @@
 	}
 	.addSongs {
 		display: none;
-		height: 68px;
+		height: $top-menuH - 27px - 30px;
 		align-items: flex-end;
 	}
 	.pickAll {
@@ -61,3 +70,5 @@
 	svg:hover  { fill: $active-low; }
 	svg:active { fill: $active; }
 }
+
+#search-box { display: none; }

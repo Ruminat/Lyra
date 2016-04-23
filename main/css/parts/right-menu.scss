@@ -4,11 +4,65 @@
 	right: 0;
 	@extend .mrWhite;
 
-	.search, .playlists {
+	.h-wrap {
 		width: 100%;
+		height: 30px;
+		justify-content: center;
 	}
+	.check, .radio-check {
+		@include sq(14px);
+		@include bgSize(10px);
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		margin-right: 5px;
+	}
+	.radio-check   { 
+		border-radius: 100%;
+		justify-content: center;
+		@extend .flex-center;
+	}
+
+	.item:hover .check, .item:hover .radio-check { border-color: $active; }
+	.item.checked .radio-check .checker          { display: block; }
+	.item.checked .check { background-image: url('../img/png-jpg/check.png'); }
+	
+	.checker {
+		@include sq(6px);
+		border-radius: 100%;
+		background: $active-low;
+		display: none;
+	}
+
+	.container {
+		width: $right-menu - 12px;
+		right: 0;
+		top: 30px;
+		position: absolute;
+		background: $white;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+
+		.item {
+			width: 100%;
+			@extend .flex-center;
+		}
+	}
+	.choose  { @extend .font; }
+	.search, .playlists { width: 100%; }
 	.search {
 		height: $top-menuH - 2px;
+
+		h6.active:hover {
+			color: $active;
+			fill: $active;
+
+		}
+		.icon {
+			@include sq(10px);
+		}
+	}
+
+	.info {
+		width: 100%;
+		height: $top-menuH - 32px;
 	}
 
 	.playlists {
@@ -19,4 +73,16 @@
 		}
 	}
 	.playlist { @extend .usual-button; }
+
+	.waiting {
+		position: absolute;
+		width: 100%;
+		height: calc(100% - #{$top-menuH} + 2px);
+		background: rgba(255, 255, 255, 0.8);
+		top: $top-menuH - 2px;
+		display: none;
+	}
+	.waiting.on { display: block; }
 }
+
+#search-parameters-shower { display: none; }
