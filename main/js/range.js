@@ -24,7 +24,7 @@ function range(dynamic, mouse, rangeID, lineID, upFunc, move) {
 				$line.css('width', (e.pageX - edgeLeft) +'px');
 			}
 
-			if (dynamic) mouse.up();
+			if (dynamic && isSet(upFunc)) upFunc();
 			if (isSet(move)) move();
 		}
 

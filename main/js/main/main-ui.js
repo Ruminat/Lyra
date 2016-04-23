@@ -101,6 +101,7 @@ function mainUI(win, vk) {
 	$(document).mouseup(function() {
 		data.mouse.move = function(e){};
 		$('.select').removeClass('no-select');
+		changeVolume();
 	});
 	$(document).click(function(e) {
 		ctxDelay.run();
