@@ -28,7 +28,7 @@ canvas {
 	}
 
 	.song:hover {
-		.title, .artist { @extend .mrPale; }
+		@extend .mrPale;
 
 		.duration  {
 			p       			  { display: none; }
