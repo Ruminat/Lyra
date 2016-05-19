@@ -22,7 +22,7 @@ $win-top-h: 20px;
 	}
 
 	.content {
-		width: 50vw;
+		width: 60vw;
 		max-height: 80vh;
 		padding: 5px;
 		background: $white;
@@ -38,8 +38,7 @@ $win-top-h: 20px;
 		overflow: hidden;
 	}
 	.wrapper { max-height: calc(80vh - #{$win-top-h}); }
-	// .error, pre { -webkit-user-select: text; }
-	.button {
+	.button  {
 		margin: 5px;
 		display: inline-block;
 		padding: 5px;
@@ -59,6 +58,27 @@ $win-top-h: 20px;
 		@extend .flex-center;
 		justify-content: center;
 	}
+	.group {
+		width: calc(100% - 15px);
+		margin: 20px 0;
+		background: $white;
+		display: flex;
+		margin-left: 15px;
+		@extend .ellipsis;
+
+		.image {
+			@include sq(100px);
+			@include bgSize(#{cover});
+			border-radius: 100%;
+		}
+		.title  { text-align: left;  }
+		.info   { margin-left: 10px; }
+		.info * {
+			width: 100%;
+			text-align: left;
+		}
+	}
+	.group:hover h5 { color: $active; }
 }
 
 #win-scroll {

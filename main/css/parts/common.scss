@@ -5,9 +5,6 @@
 	outline: none;
 	-webkit-padding-start: 0;
 	@extend .interface;
-	// ::selection {
-	// 	background: rgba(255, 180, 200, 0.4);
-	// }
 }
 html, body, .main{
 	width: 100vw;
@@ -33,6 +30,22 @@ input {
 	padding: 5px;
 	cursor: text;
 	@extend .font;
+}
+
+//Radios and checks
+.radio-check   { 
+	border-radius: 100%;
+	justify-content: center;
+	@extend .flex-center;
+}
+.item:hover .check, .item:hover .radio-check { border-color: $active;     }
+.item.checked .radio-check .checker          { display: block;            }
+.item.checked .check { background-image: url('../img/png-jpg/check.png'); }
+.checker {
+	@include sq(6px);
+	border-radius: 100%;
+	background: $active-low;
+	display: none;
 }
 
 //Scroll stuff
@@ -105,7 +118,7 @@ p  { @extend .font;   }
 
 .tip, .context-menu {
 	position: fixed;
-	z-index: 1010;
+	z-index: 618618;
 	padding: 3px;
 	display: none;
 	background: $white;
@@ -135,13 +148,14 @@ p  { @extend .font;   }
 }
 
 //Total crap
-.progress, .line {
+.progress, .line, .loaded {
 	height: 6px;
 	border-radius: 5px;
 }
-.progress { background: rgba(255, 255, 255, 0.5); }
-.line { background: rgba(255, 255, 255, 0.8); }
-.line:hover { background: #fff; }
+.progress   { background: rgba(255, 255, 255, 0.2);  }
+.loaded     { background: rgba(255, 255, 255, 0.35); }
+.line       { background: rgba(255, 255, 255, 0.8);  }
+.line:hover { background: #fff; 										 }
 
 .menu, .right-menu, .top-menu, .songs {
 	position: absolute;

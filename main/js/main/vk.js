@@ -7,7 +7,7 @@ function vk(data, player) {
 
 	//Parse login data (id, token)
 	this.parseLogin = function(win) {
-	  var url = win.getUrl();
+	  var url = win.getURL();
 	  var str = 'index.html#DATA:';
 	  var pos = url.indexOf(str) + str.length;
 	  var txt = url.substr(pos, url.length);
@@ -88,12 +88,12 @@ function vk(data, player) {
 	    }
 	    var url = res.substr(pos + search.length, 250);
 	    $.get(url.split('"')[1], function(res) {
-	    	win.loadUrl('file://' + __dirname + '/../../views/authentication.html');
+	    	win.loadURL('file://' + __dirname + '/../../views/authentication.html');
 	    });
 	  });
 	}
-	this.APImethod = function(url) {
-		return 'https://api.vk.com/method/'+ url +'v=5.40&access_token='+ data.vk.token;
+	this.APImethod = function(method, url) {
+		return 'https://api.vk.com/method/'+ method +'?'+ url +'v=5.40&access_token='+ data.vk.token;
 	}
 }
 

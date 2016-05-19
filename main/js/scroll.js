@@ -12,8 +12,8 @@ function scroll(parentScrollID, scrollerID, wrapperID, mouse, funcs) {
 	var scroll  = document.getElementById(scrollerID);
 	mouse.move  = function(){};
 
-	var space = function() { return wrap.scrollHeight - $wrap.height(); };
-	var height = function() { return $parent.height() - $scroll.height(); };
+	var space = function()  { return wrap.scrollHeight - $wrap.height();   };
+	var height = function() { return $parent.height()  - $scroll.height(); };
 
 	$(document).mouseup(function() { up(); });
 
@@ -45,6 +45,17 @@ function scroll(parentScrollID, scrollerID, wrapperID, mouse, funcs) {
 		var percent = ($wrap.scrollTop() / (space() / 100)) / 100;
 		$scroll.css('top', (height() * percent) + 'px');
 	});
+
+	this.check = function() {
+		var w = $wrapper()[0];
+		if (w.scrollHeight > w.clientHeight) {
+			$scroll.css('display', 'block');
+		} else {
+			$scroll.css('display', 'none');
+		}
+	}
+
+	function $wrapper() { return $('#'+ wrapperID); }
 }
 
 module.exports = scroll;

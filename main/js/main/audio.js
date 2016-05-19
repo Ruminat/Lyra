@@ -1,8 +1,9 @@
 function audio(data) {
 	var that = this;
 
-	this.elem = document.getElementById('audio');
+	this.elem    = document.getElementById('audio');
 	this.playing = false;
+	this.loaded  = 0;
 
 	var AudioContext = window.AudioContext;
 	var ctx       = new AudioContext;
@@ -124,6 +125,12 @@ function audio(data) {
 			} else {
 				that.changeSong(1, player.list);
 			}
+		}
+	}
+
+	that.elem.onprogress = function() {
+		if (that.elem.readyState == 4) {
+			that.loaded = that.elem.buffered.end(that.elem.buffered.length - 1);
 		}
 	}
 

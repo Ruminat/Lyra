@@ -1,3 +1,4 @@
+$song-h: 22px;
 canvas, .songs {
 	position: absolute;
 	transition: opacity 0.2s ease;
@@ -23,15 +24,18 @@ canvas {
 	@extend .mrWhite;
 
 	.song {
-		height: 28px;
-		padding: 2px 0;
+		height: $song-h + 10px;
+		p {
+			height: $song-h;
+			line-height: $song-h;
+		}
 	}
 
 	.song:hover {
 		@extend .mrPale;
 
 		.duration  {
-			p       			  { display: none; }
+			p       			  { display: none; 																		  }
 			.download       { @include img('../img/png-jpg/download.png');        }
 			.lyrics 			  { @include img('../img/png-jpg/lyrics.png');          }
 			.add    			  { @include img('../img/png-jpg/add.png');             }
@@ -48,8 +52,9 @@ canvas {
 	.removed     { opacity: 0.3; }
 
 	li {
-		height: 18px;
+		height: $song-h;
 		padding: 5px;
+		line-height: $song-h;
 		@extend .ellipsis;
 		@extend .font;
 		@extend .interface;
@@ -69,6 +74,7 @@ canvas {
 		ul, li  { padding: 0;				 }
 		ul      { @include sq(100%); }
 		.icon   { 
+			margin-top: 2px;
 			@include sq(18px);
 			@extend .bg-center;
 		}

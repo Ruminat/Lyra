@@ -1,6 +1,6 @@
 .top {
 	$rightCount: 3;
-	$leftCount: 3;
+	$leftCount: 2;
 	$iconMargin: 4;
 
 	width: 100vw;
@@ -41,7 +41,7 @@
 			color: $black;
 		}
 	.left {
-		width: ((24 + $iconMargin) * $leftCount)#{"px"};
+		width: ((20 + $iconMargin) * $leftCount)#{"px"};
 
 		.icon {
 			margin-right: 0;

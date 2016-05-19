@@ -39,7 +39,7 @@ $(document).ready(function() {
 		vk.contents = vk.win.webContents;
 		//Fires the when page is loaded
 		vk.contents.on('did-finish-load', function() {
-			var url = vk.win.getUrl();
+			var url = vk.win.getURL();
 			//If the url starts with 'https://oauth.vk.com/blank.html', i.e. the user is logged in 
 			if (url.substr(0, 31) == 'https://oauth.vk.com/blank.html') {
 				closeVK();
@@ -56,7 +56,7 @@ $(document).ready(function() {
 		});
 
 		//VK Authentication url
-		vk.win.loadUrl('https://oauth.vk.com/authorize?'
+		vk.win.loadURL('https://oauth.vk.com/authorize?'
 		+'client_id=5175660&display=page&'
 		+'redirect_uri=https://oauth.vk.com/blank.html&'
 		+'scope=audio,friends,status&response_type=token&v=5.40');
@@ -70,7 +70,7 @@ $(document).ready(function() {
 	function openMain(url) {
 		closeVK();
 
-		win.loadUrl(url);
+		win.loadURL(url);
 		win.removeAllListeners();
 	}
 	function closeVK() {

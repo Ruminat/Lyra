@@ -289,7 +289,7 @@ function playlists(data) {
 	}
 
 	function stickFolder(id) {
-		$('.win').css('display', 'flex');
+		mainUI.callWin();
 		var title = $('#'+ id)[0].innerText;
 		var html = '<h4>Прикрепление папок к альбому '+ title +'</h4>';
 
@@ -326,7 +326,7 @@ function playlists(data) {
 			$('#folders-save').click(function() {
 				obj.lists[num].folders = folders;
 				writeToPlaylists(obj);
-				$('.win').css('display', 'none');
+				mainUI.hideWin();
 			});
 
 			var $field = $('#folders-field');

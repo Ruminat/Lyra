@@ -1,6 +1,7 @@
 function player(audio) {
 	var that          = this;
 	var isTimeMoving  = false;
+	this.loaded       = false;
 	this.timingPeriod = 250;
 	this.duration     = 0;
 	this.list         = [];
@@ -51,17 +52,19 @@ function player(audio) {
 
 		shuffle(that.shuffleList, 1);
 	}
-	this.nextSong     = function() { audio.changeSong(1, that.shuffle ? that.shuffleList : that.list); }
-	this.prevSong     = function() { audio.changeSong(0, that.shuffle ? that.shuffleList : that.list); }
-	this.changeSong   = function(src, title, artist, duration) {
+	this.nextSong    = function() { audio.changeSong(1, that.shuffle ? that.shuffleList : that.list); }
+	this.prevSong    = function() { audio.changeSong(0, that.shuffle ? that.shuffleList : that.list); }
+	this.changeSong  = function(src, title, artist, duration) {
 		audio.elem.src = src;
-		that.duration = duration;
+		that.duration  = duration;
 		that.loadImage(artist);
     audio.play();
+    audio.loaded = 0;
     checkTitle('.menu .artist', artist);
-    checkTitle('.menu .title', title);
+    checkTitle('.menu .title',  title);
     $('.player .title').text(artist == '' ? title : artist + ' - ' + title);
     $('.player .right').text(duration);
+    $('.player .loaded').css('width', '0');
 
     function checkTitle(elem, what) {
     	if (what == '') {
@@ -163,24 +166,29 @@ function player(audio) {
 		that.id = info.id;
 		that.playing = that.findSong(info.id);
 	}
-	this.songsClick = function() {
-		console.log('ТРИВОГА!!! АЛЯРМА! songsClick!');
-		that.stats.call();
-	}
 	
 	function updateStats() {
 		$('#songs-num').text(that.list.length +' Аудиозаписей');
 		$('.songs .empty').css('display', 'none');
+		mainUI.checkScrolls();
 	}
 	//Displays current time, moves progress bar
 	function updateTime() {
-		var time  = audio.elem.currentTime;
-		var per   = time / parseTime(that.duration);
-		var width = $('.player .progress').width() * per;
+		var time   = audio.elem.currentTime;
+		var dur    = parseTime(that.duration)
+		var per    = time / dur;
+		var width  = $('.player .progress').width();
+		var loaded = audio.loaded / dur;
 
+		if (!that.loaded) 
+			$('.player .loaded').css('width', (width * loaded) + 'px');
+
+		if (Math.round(audio.loaded) >= Math.round(dur)) 
+			that.loaded = true;
+		
 		$('#time-current').text(parseSec(Math.round(time)));
 		if (!isTimeMoving) {
-			$('.player .line').css('width', width + 'px');
+			$('.player .line').css('width', (width * per) + 'px');
 		}
 	}
 	this.changeTime = function(val) {

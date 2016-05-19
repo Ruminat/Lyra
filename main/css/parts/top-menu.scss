@@ -19,12 +19,7 @@
 		outline: 1px solid $green-low;
 	}
 
-	.button {
-		display: inline;
-		padding: 5px;
-		margin: 0 5px;
-		@extend .font;
-	}
+	.button { @extend .la-button; }
 	.addSongs {
 		display: none;
 		height: $top-menuH - 27px - 30px;

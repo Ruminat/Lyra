@@ -37,8 +37,7 @@ $diff: 5px;
 		width: calc(100% - 40px);
 		margin: 0 20px;
 	}
-	.line {
+	.line, .loaded {
 		width: 0;
-		// transition: 1s linear;
 	}
 }

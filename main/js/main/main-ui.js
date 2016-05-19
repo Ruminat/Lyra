@@ -1,3 +1,6 @@
+//TODO:
+//make a function for hiding bars (playlists, player, e.t.c)
+//clear cache function
 function mainUI(win, vk) {
 	var that = this;
 	this.ui = {
@@ -12,19 +15,27 @@ function mainUI(win, vk) {
 	
 	window.localMusic = new PcMusic(this.ui);
 	window.checkers   = new Checkers();
+	var groups        = new Groups();
+	var songsEvents   = new SongsEvents(that);
+	var settings      = new Settings();
 	
-	var searchElem  = $('#search-container');
-	window.ctxMenu  = $('.context-menu');
-	window.tip      = $('.tip');
-	var ctxDelay    = new delay(500, function() { ctxMenu.css('display', 'none');    });
-	var searchDelay = new delay(500, function() { searchElem.css('display', 'none'); });
+	var searchElem    = $('#search-container');
+	window.ctxMenu    = $('.context-menu');
+	window.tip        = $('.tip');
+	var ctxDelay      = new delay(500, function() { ctxMenu.css('display', 'none');    });
+	var searchDelay   = new delay(500, function() { searchElem.css('display', 'none'); });
+
+	var soundRange    = new Range(true, data.mouse,    'sound-progress',    'sound-line',    changeVolume);
+	var winScroll     = new Scroll('win-scroll',       'win-scroller',      'win-wrap',      data.mouse);
+	var settScroll    = new Scroll('settings-scroll',  'settings-scroller', 'settings-wrap', data.mouse);
+	var songsScroll   = new Scroll('songs-scroll',     'songs-scroller',    'songs-wrap',    data.mouse, that.changeScroll);
 
 	var srch = {
-		by: new checkers.radio('.search .artist-title'),
-		sort: new checkers.radio('.search .sort .choose'),
+		by:     new checkers.radio('.search .artist-title'),
+		sort:   new checkers.radio('.search .sort .choose'),
 		checks: new checkers.checks(['#srch-text-only']),
-		pos: 0,
-		count: 100
+		pos:    0,
+		count:  100
 	}
 
 	this.focus = function(id) {
@@ -66,11 +77,23 @@ function mainUI(win, vk) {
 
 		ctxDelay.call();
 	}
+	this.callWin  = function()     { $('.win').css('display', 'flex'); }
+	this.hideWin  = function()     { $('.win').css('display', 'none'); }
+	this.applyWin = function(html) {
+		$('#win-wrap').html(html);
+		that.checkScrolls();
+	}
+	this.checkScrolls = function() {
+		winScroll.check();
+		songsScroll.check();
+		settScroll.check();
+	}
+
 	this.inActive = function(condition, sections, cls, desc) {
 		if (condition) {
 			sections.push([cls, desc]);
 		} else {
-			sections.push([cls+ ' inactive', desc]);
+			sections.push([cls +' inactive', desc]);
 		}
 	}
 	this.songsHover = function() {
@@ -109,25 +132,25 @@ function mainUI(win, vk) {
 	});
 
 	ctxMenu.on('click', '.inactive', function(e) { 
-		if (data.check) {
-			e.stopImmediatePropagation();
-		} 
+		if (data.check) e.stopImmediatePropagation();
 	 });
 	 $('#search-container').click(function(e) {
-		if (data.check) {
-			e.stopImmediatePropagation();
-		}
+		if (data.check) e.stopImmediatePropagation();
 	});
 
-	$('#main-settings').click(function() { vk.logout(win, data); });
-	$('#empty').click(function()         { player.emptySongs(); });
+	$('#logout').click(function()     { vk.logout(win, data); });
+	$('#empty').click(function()      { player.emptySongs(); });
 	//Player buttons
-	$('#play-pause').click(function()    { audio.toggle(); });
-	$('#next-song').click(function()     { player.nextSong(); });
-	$('#prev-song').click(function()     { player.prevSong(); });
+	$('#play-pause').click(function() { audio.toggle(); });
+	$('#next-song').click(function()  { player.nextSong(); });
+	$('#prev-song').click(function()  { player.prevSong(); });
 	$('#repeat').click(function() {
 		player.repeat = !player.repeat; 
 		$(this).toggleClass('active-low');
+	});
+	$('#refresh').click(function() {
+		win.removeAllListeners();
+		document.location.reload();
 	});
 	$('#shuffle').click(function() {
 		player.shuffle = !player.shuffle; 
@@ -142,136 +165,8 @@ function mainUI(win, vk) {
 		}
 	});
 
-	$('.songs').on('click', '.title, .artist', function() {
-		var elem = $(this).parent().parent();
-		var Class = elem[0].className;
-		// vk.download(elem);
-		if (Class.indexOf('pick') == -1) {
-			if (player.playing != -1) $('#'+ player.id).removeClass('activeC-low');
-			player.ChangeElemSong(elem);
-    	player.makeShuffle();
-		}
-	});
-	$('.songs').on('click', '.lyrics', function() {
-		var elem = songsIconParent($(this));
-		var info = player.getSongData(elem[0]);
-		vk.request('audio.getLyrics', 'lyrics_id='+ info.lyrics, function(res) {
-			if (isSet(res.response)) {
-				applyText(res.response.text);
-			} else {
-				rejectLyrics();
-			}
-		});
-		function rejectLyrics() {
-			$('.win').css('display', 'flex');
-			var text = 'Текст аудиозаписи не найден.';
-			applyText(text);
-		}
-		function applyText(text) {
-			$('.win').css('display', 'flex');
-
-			var title = info.artist == '' ? info.title : info.artist + ' - ' + info.title;
-			var html = '<h4>'+ title +'</h4>';
-			html += '<pre class="select">'+ text +'</pre>';
-			// html += '<h6>Найти текст в</h6>';
-			// html += '<div class="button green-BG">Spotify</div>';
-			// html += '<div class="button green-BG">Deezer</div>';
-			// html += '<div class="button green-BG">Google Music</div>';
-
-			$('#win-wrap').html(html);
-		}
-	});
-	$('.songs').on('click', '.add, .delete', function() {
-		var elem = songsIconParent($(this));
-		var info = player.getSongData(elem[0]);
-		var audioID = info.id.substr(3, info.id.length);
-
-		//Add
-		if ($(this)[0].className.indexOf('delete') == -1) {
-			vk.request('audio.add', `audio_id=${audioID}&owner_id=${info.owner}`, function(res) {
-				if (isSet(res.response)) elem.addClass('added');
-			});
-		//Vk delete
-		} else if (info.type == 'vk') {
-			vk.request('audio.delete', `audio_id=${audioID}&owner_id=${info.owner}`, function(res) {
-				if (isSet(res.response)) elem.addClass('removed');
-			});
-		}
-	});
-	$('.songs').on('click', '.download', function() {
-		var path = '';
-		var elem = songsIconParent($(this));
-		if (isSet(data.settings.download.path)) path = data.settings.download.path;
-		vk.download(elem, path);
-	});
-
-	$('.songs').on('contextmenu', '.song', function(e) {
-		var sections = [];
-		var info     = player.getSongData($(this)[0]);
-		var audioID  = info.id.substr(3, info.id.length);
-		var elem     = $(this);
-		var id       = info.owner;
-		var mine     = id == data.vk.id;
-		var typeVK   = info.type == 'vk';
-		that.inActive( (typeVK && !mine), sections, 'add', 'Добавить в мои аудиозаписи');
-		that.inActive(isSet(info.lyrics), sections, 'get-lyrics', 'Текст аудиозаписи');
-		that.inActive( (typeVK &&  mine), sections, 'edit', 'Редактировать');
-		that.inActive((!typeVK ||  mine), sections, 'delete', 'Удалить');
-
-		that.setUpMenu(e, sections, function() {
-			var m = '.context-menu';
-			var not = ':not(.inactive)';
-			$(`${m} .get-lyrics${not}`).click(function(elem) {
-				vk.request('audio.getLyrics', 'lyrics_id='+ info.lyrics, function(res) {
-					if (isSet(res.response)) {
-						applyText(res.response.text);
-					} else {
-						rejectLyrics();
-					}
-				});
-			});
-			$(`${m} .edit${not}`).click(function() {
-				console.log('Edit');
-			});
-			addOrDelete(`${m} .add${not}`,    'add',    'added',   elem);
-			addOrDelete(`${m} .delete${not}`, 'delete', 'removed', elem, function() {
-				console.log('delete local song');
-			});
-		});
-
-		function addOrDelete(element, method, cls, elem, cb) {
-			$(element).click(function() {
-				if (typeVK) {
-					vk.request(`audio.${method}`, `audio_id=${audioID}&owner_id=${info.owner}`, function(res) {
-						elem.addClass(cls);
-					});
-				} else if (isSet(cb)) cb();
-			});
-		}
-		function rejectLyrics() {
-			$('.win').css('display', 'flex');
-			var text = 'Текст аудиозаписи не найден.';
-			applyText(text);
-		}
-		function applyText(text) {
-			$('.win').css('display', 'flex');
-
-			var title = info.artist == '' ? info.title : info.artist + ' - ' + info.title;
-			var html = '<h4>'+ title +'</h4>';
-			html += '<pre class="select">'+ text +'</pre>';
-
-			$('#win-wrap').html(html);
-		}
-	});
 	//Crap
-	$('.songs').hover(function() {
-		that.ui.songs.enter = true;
-		that.songsHover();
-	 }, function() {
-	 	that.ui.songs.enter = false;
-		that.songsHover();
-	});
-	$('.main').on('mouseenter', '.with-tip', function() {
+	$(document).on('mouseenter', '.with-tip', function() {
 		var padding = 10;
 		tip.html('<div>'+ $(this)[0].attributes.data.nodeValue +'</div>');
 		tip.css('display', 'flex');
@@ -290,7 +185,7 @@ function mainUI(win, vk) {
 		tip.css('left', x +'px');
 		tip.css('top',  y +'px');
 	 });
-	 $('.main').on('mouseleave', '.with-tip', function() {
+	 $(document).on('mouseleave', '.with-tip', function() {
 		$('.tip').css('display', 'none');
 	});
 	$('.win').on('click', '#close-win, #folders-cancel', function() {
@@ -369,39 +264,7 @@ function mainUI(win, vk) {
 		var per = $('#sound-line').width() / $('#sound-progress').width();
 		player.changeVolume(per);
 	}
-	function songsIconParent(elem) {
-		return elem.parent().parent().parent().parent().parent();
-	}
-
-	var soundRange = new Range(true, data.mouse, 'sound-progress', 'sound-line', changeVolume);
-	var winScroll  = new Scroll('win-scroll',    'win-scroller',   'win-wrap',   data.mouse);
-	var songs      = new Scroll('songs-scroll',  'songs-scroller', 'songs-wrap', data.mouse, that.changeScroll);
-
-	$('#songs-wrap').scroll(function() {
-		if (data.state == 'search') {
-			var elem   = document.getElementById('songs-wrap');
-			var h      = elem.scrollHeight - $(this).height();
-			var scroll = $(this).scrollTop();
-
-			if (h == scroll) {
-				srch.pos = player.list.length;
-				var query = srch.query + `&offset=${srch.pos}`;
-				vk.request('audio.search', query, function(res) {
-					if (isSet(res)) {
-						var model = vk.addSongs(res.response.items);
-
-						$('.songs .wrapper').append(model);
-				    player.makeShuffle();
-				    player.stats.call();
-				    $('#srch-total-found').text('Всего найдено: '+ formatNumber(res.response.count));
-
-				    data.state = 'search';
-				    $('#songs-wrap').scrollTop($('#songs-wrap').scrollTop() + 1);
-					}
-				});
-			}
-		}
-	});
+	this.songsIconParent = function(elem) { return elem.parent().parent().parent().parent().parent(); }
 }
 
 module.exports = mainUI;

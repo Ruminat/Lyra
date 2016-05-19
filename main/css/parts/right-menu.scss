@@ -9,28 +9,7 @@
 		height: 30px;
 		justify-content: center;
 	}
-	.check, .radio-check {
-		@include sq(14px);
-		@include bgSize(10px);
-		border: 1px solid rgba(0, 0, 0, 0.2);
-		margin-right: 5px;
-	}
-	.radio-check   { 
-		border-radius: 100%;
-		justify-content: center;
-		@extend .flex-center;
-	}
-
-	.item:hover .check, .item:hover .radio-check { border-color: $active; }
-	.item.checked .radio-check .checker          { display: block; }
-	.item.checked .check { background-image: url('../img/png-jpg/check.png'); }
-	
-	.checker {
-		@include sq(6px);
-		border-radius: 100%;
-		background: $active-low;
-		display: none;
-	}
+	.check, .radio-check { @extend .standart-checks; }
 
 	.container {
 		width: $right-menu - 12px;

@@ -51,6 +51,19 @@ $topH: 28px;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
+.la-button {
+	display: inline;
+	padding: 5px;
+	margin: 0 5px;
+	@extend .font;
+}
+.standart-checks {
+	@include sq(14px);
+	@include bgSize(10px);
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	margin-right: 5px;
+}
+
 .usual-button {
 	width: calc(100% - 10px);
 	height: 24px;

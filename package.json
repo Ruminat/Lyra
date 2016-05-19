@@ -1,6 +1,6 @@
 {
   "name": "Lyra",
-  "version": "0.2.5",
+  "version": "0.2.7",
   "description": "Music Player for VK",
   "main": "main.js",
   "scripts": {
