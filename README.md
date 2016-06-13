@@ -1,4 +1,4 @@
-# Lyra v. 0.2.0
+# Lyra v. 0.2.9
 Music player with **VK** (russian social network) **API** integration. It has an **audio visualizer**, **playlists** and some other features.
 Lyra uses [Electron](http://electron.atom.io/ "Electron website") framework so it's a crossplatform app.
 ![Lyra](Lyra.png "Lyra")
