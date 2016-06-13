@@ -77,7 +77,7 @@ function vk(data, player) {
 	  });
 	}
 
-	this.logout = function(win, data) {
+	this.logout = function() {
 	  $.get('https://vk.com', function(res) {
 	    //parse hash from quit button
 	    var search = '<a class="top_nav_link" id="logout_link" href=';

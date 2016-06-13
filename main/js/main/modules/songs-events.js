@@ -34,7 +34,7 @@ function SongsEvents(that) {
 		}
 	});
 	$('.songs').on('click', '.add, .delete', function() {
-		var elem = songsIconParent($(this));
+		var elem = that.songsIconParent($(this));
 		var info = player.getSongData(elem[0]);
 		var audioID = info.id.substr(3, info.id.length);
 
@@ -51,10 +51,11 @@ function SongsEvents(that) {
 		}
 	});
 	$('.songs').on('click', '.download', function() {
-		var path = '';
-		var elem = songsIconParent($(this));
-		if (isSet(data.settings.download.path)) path = data.settings.download.path;
-		vk.download(elem, path);
+		if (s.downloads != '') {
+			var path = s.downloads.path;
+			var elem = that.songsIconParent($(this));
+			vk.download(elem, path);
+		}
 	});
 	$('.songs').on('contextmenu', '.song', function(e) {
 		var sections = [];
@@ -128,8 +129,8 @@ function SongsEvents(that) {
 			var scroll = $(this).scrollTop();
 
 			if (h == scroll) {
-				srch.pos  = player.list.length;
-				var query = srch.query + `&offset=${srch.pos}`;
+				that.srch.pos  = player.list.length;
+				var query = that.srch.query + `&offset=${that.srch.pos}`;
 				vk.request('audio.search', query, function(res) {
 					if (isSet(res)) {
 						var model = vk.addSongs(res.response.items);

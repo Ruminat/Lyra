@@ -10,7 +10,6 @@
 	<% var settings = true %>
 	<% include templates/top %>
 
-	<% include templates/settings %>
 	<div class="main">
 		<canvas id="canvas"></canvas>
 		<% include templates/songs %>
@@ -19,8 +18,10 @@
 		<% include templates/player %>
 		<% include templates/right-menu %>
 
+		<% include templates/settings %>
+
 		<div class="context-menu"></div>
-		<div class="tip"><div>Some tip</div></div>
+		<div class="tip"><div>Some tip</div></div>		
 
 		<% include templates/win %>
 

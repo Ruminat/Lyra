@@ -12,6 +12,8 @@ $S-bottomH: 50px;
 	padding: 10px;
 	display: none;
 
+	.photo { @extend .bg-center; }
+
 	.navigation {
 		height: $S-navH;
 
@@ -29,10 +31,12 @@ $S-bottomH: 50px;
 	.wrap {
 		@include sq(100%);
 		overflow-y: auto;
+		h5, h6 {
+			text-align: left;
+			margin: 5px 0; 
+		}
 	}
-	.scroll-parent {
-		height: 100%;
-	}
+	.scroll-parent { height: 100%; }
 
 	.bottom {
 		width:  100%;
@@ -42,15 +46,40 @@ $S-bottomH: 50px;
 		left: 0;
 		padding-left: 10px;
 		@extend .flex-center;
+
+		.button { margin-left: 10px; }
 	}
-	.button {
-		@extend .la-button;
-		margin-left: 10px;
-	}
-	.item {
-		@extend .flex-center;
-	}
+	.button { @extend .la-button;   }
+	.item   { @extend .flex-center; }
 	.check, .radio-check { @extend .standart-checks; }
+
+	.align     { margin-bottom: 5px; }
+	#vk-status { height: 50px;       }
+	.icon      { @include sq(18px);  }
+	.path {
+		width: 450px;
+		color: $black;
+	}
+	.block {
+		display: flex;
+		align-items: flex-top;
+		margin: 5px 0;
+
+		h1, h2, h3, h4, h5, h6 {
+			text-align: left;
+			margin: 0;
+		}
+
+		.button {
+			display: inline-block;
+			margin: 0;
+		}
+
+		.right {
+			margin-left: 5px;
+			flex-grow: 1;
+		}
+	}
 }
 
 .S-top {

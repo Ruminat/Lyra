@@ -43,16 +43,18 @@ function audio(data) {
 
   //Canvas stuff
 	var canvas = document.getElementById('canvas');
-	var h = canvas.height = $('canvas').height();
-	var w = canvas.width = $('canvas').width();
-	var pi = Math.PI;
-	var lines = [];
+	var h      = canvas.height = $('canvas').height();
+	var w      = canvas.width = $('canvas').width();
+	var pi     = Math.PI;
+	var lines  = [];
+	var r      = 150; //radius
+	var n      = 270; //number of stripes
+	this.arcs  = 18;
 	var screenSize = new delay(40, function() {
 		h = document.getElementById('canvas').height = $('canvas').height();
 		w = document.getElementById('canvas').width = $('canvas').width();
 	});
-	this.arcs = 20;
-	canvas = document.getElementById('canvas').getContext('2d');
+	canvas    = document.getElementById('canvas').getContext('2d');
 	canvas.strokeStyle = '#2F2F2F';
 	for (var c = 0; c < that.arcs; c++){
 		lines.push(c*pi / that.arcs);
@@ -116,18 +118,12 @@ function audio(data) {
 	}
 
 	//Fires when a song is over
-	this.elem.onended = function() {
-		if (player.repeat) {
-			that.play();
-		} else {
-			if (player.shuffle) {
-				that.changeSong(1, player.shuffleList);
-			} else {
-				that.changeSong(1, player.list);
-			}
-		}
+	this.elem.onended = function() { songEnd(); }
+	//Fires when audio data is unavailable
+	this.elem.onstalled = function() {
+		player.nextSong();
 	}
-
+	//Fires when the audio data is being downloaded
 	that.elem.onprogress = function() {
 		if (that.elem.readyState == 4) {
 			that.loaded = that.elem.buffered.end(that.elem.buffered.length - 1);
@@ -145,14 +141,12 @@ function audio(data) {
     }
 	}
 
+	
 	//Draws audio visualization
 	function drawSpectrum(array) {
-		var r = 150;
-		var n = 270;
-    var mh = Math.round(h/2);
-    var mw = Math.round(w/2);
-    var a = 0;
-
+	  var mh = Math.round(h/2);
+	  var mw = Math.round(w/2);
+	  var a = 0;
     var l = lines.length;
 		for (var c = 0; c < l; c++){
 			canvas.beginPath();
@@ -174,6 +168,18 @@ function audio(data) {
 
 	    a += 2 * pi/n;
     }
+	}
+
+	function songEnd() {
+		if (player.repeat) {
+			that.play();
+		} else {
+			if (player.shuffle) {
+				that.changeSong(1, player.shuffleList);
+			} else {
+				that.changeSong(1, player.list);
+			}
+		}
 	}
 }
 

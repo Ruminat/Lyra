@@ -14,7 +14,12 @@ module.exports = function(grunt) {
 
 		watch: {
 			ejs: {
-				files: ['main/views/*.ejs', 'main/views/templates/*.ejs', 'main/views/svg/*.ejs'],
+				files: [
+					'main/views/*.ejs', 
+					'main/views/templates/*.ejs', 
+					'main/views/svg/*.ejs', 
+					'main/views/templates/settings/*.ejs'
+				],
 				tasks: 'ejs'
 			}
 		}

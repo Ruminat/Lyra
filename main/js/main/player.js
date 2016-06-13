@@ -10,7 +10,7 @@ function player(audio) {
 	this.id           = '';
 	this.shuffle      = false;
 	this.repeat       = false;
-	this.stats        = new delay(50, function() { updateStats() });
+	this.stats        = new delay(50, function() { updateStats(); });
 	this.timing       = function(){};
 
 	var range = new Range(false, data.mouse, 'player-progress', 'player-line', checkTime, movingTime);
@@ -27,7 +27,7 @@ function player(audio) {
 		that.stats.call();
 	}
 	//Load music artist image from Deezer
-	this.loadImage    = function(artist) {
+	this.loadImage   = function(artist) {
 	  if (data.connection) {
 	  	var url = 'http://api.deezer.com/search/artist?q=artist:"'+ artist +'"';
 		  $.get(url, function(res) {
@@ -43,7 +43,7 @@ function player(audio) {
 		  });
 	  }
 	}
-	this.makeShuffle  = function() {
+	this.makeShuffle = function() {
 		var id = (that.playing == -1) ? 0 : that.playing;
 
 		var t = that.shuffleList[id];
@@ -58,8 +58,9 @@ function player(audio) {
 		audio.elem.src = src;
 		that.duration  = duration;
 		that.loadImage(artist);
-    audio.play();
-    audio.loaded = 0;
+		audio.play();
+		audio.loaded = 0;
+		that.loaded  = false;
     checkTitle('.menu .artist', artist);
     checkTitle('.menu .title',  title);
     $('.player .title').text(artist == '' ? title : artist + ' - ' + title);
@@ -76,12 +77,12 @@ function player(audio) {
     	}
     }
 	}
-	this.changeVolume = function(val) {
+	this.changeVolume   = function(val) {
 		audio.elem.volume = val;
 		$('#sound-value').text(Math.round(val * 100) + '%');
 		$('#sound-line').css('width', (val * $('#sound-progress').width()) +'px');
 	}
-	this.findSong     = function(id, playlist) {
+	this.findSong       = function(id, playlist) {
 		//I don't know why, but this piece of crap doesn't work with forEach
 		var list = playlist || (that.shuffle ? that.shuffleList : that.list);
 		for (var c = 0; c < list.length; c++){
@@ -89,7 +90,7 @@ function player(audio) {
 		}
 		return -1;
 	}
-	this.getSongData  = function(elem) {
+	this.getSongData    = function(elem) {
 		var children = elem.children[0].children;
 		var result = {};
 
@@ -118,7 +119,7 @@ function player(audio) {
 
 		return result;
 	}
-	this.songHtml     = function(type, id, url, title, artist, duration, addition, options) {
+	this.songHtml       = function(type, id, url, title, artist, duration, addition, options) {
 		var is = {download: false, delete: false, lyrics: false, add: false}
 		if (isSet(options)) {
 			if (isSet(options.download)) is.download = options.download;
@@ -126,14 +127,14 @@ function player(audio) {
 			if (isSet(options.lyrics))   is.lyrics   = options.lyrics;
 			if (isSet(options.add))      is.add      = options.add;
 		}
-		var more   = isSet(addition) ? addition : ``;
-		var Class  = `song`+ (type == `pc` ? ` local` : ``) + (artist == `` ? ` no-artist` : ``);
-		var Artist = (artist != ``) ? `<li class="artist">${artist}` : ``;
-		var download = (is.download) ? `<li><div class="download icon with-tip" data="Скачать"></div>\n`   : ``;
-		var lyrics   = (is.lyrics)   ? `<li><div class="lyrics icon with-tip" data="Текст песни"></div>\n` : ``;
-		var dlt      = (is.delete)   ? `<li><div class="delete icon with-tip" data="Удалить"></div>\n`     : ``;
-		var add      = (is.add)      ? `<li><div class="add icon with-tip" data="Добавить"></div>\n`       : ``;
-		var result =
+		var Class    = `song`+ (type == `pc` ? ` local` : ``) + (artist == `` ? ` no-artist` : ``);
+		var more     = isSet(addition) ? addition : '';
+		var Artist   = (artist != ``)  ? `<li class="artist">${artist}` : ``;
+		var download = (is.download)   ? `<li><div class="download icon with-tip" data="Скачать"></div>`   + `\n` : '';
+		var lyrics   = (is.lyrics)     ? `<li><div class="lyrics icon with-tip" data="Текст песни"></div>` + `\n` : '';
+		var dlt      = (is.delete)     ? `<li><div class="delete icon with-tip" data="Удалить"></div>`     + `\n` : '';
+		var add      = (is.add)        ? `<li><div class="add icon with-tip" data="Добавить"></div>`       + `\n` : '';
+		var result   =
 		 `<div class="${Class}" id="${type}-${id}" `
 		+`url="${url}" ${more}>`
 			+`<ul>`
@@ -171,6 +172,8 @@ function player(audio) {
 		$('#songs-num').text(that.list.length +' Аудиозаписей');
 		$('.songs .empty').css('display', 'none');
 		mainUI.checkScrolls();
+
+		mainUI.ui.songs.list = $('#songs-wrap')[0].children;
 	}
 	//Displays current time, moves progress bar
 	function updateTime() {
@@ -183,15 +186,17 @@ function player(audio) {
 		if (!that.loaded) 
 			$('.player .loaded').css('width', (width * loaded) + 'px');
 
-		if (Math.round(audio.loaded) >= Math.round(dur)) 
+		if (Math.round(audio.loaded) >= Math.round(dur) && !that.loaded) {
 			that.loaded = true;
+			$('.player .loaded').css('width', width + 'px');
+		}
 		
 		$('#time-current').text(parseSec(Math.round(time)));
 		if (!isTimeMoving) {
 			$('.player .line').css('width', (width * per) + 'px');
 		}
 	}
-	this.changeTime = function(val) {
+	this.changeTime  = function(val) {
 		var time = audio.elem.duration * val;
 		audio.elem.currentTime = time;
 		$('#time-current').text(parseSec(Math.round(time)));

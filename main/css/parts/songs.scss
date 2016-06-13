@@ -55,6 +55,7 @@ canvas {
 		height: $song-h;
 		padding: 5px;
 		line-height: $song-h;
+		display: none !important;
 		@extend .ellipsis;
 		@extend .font;
 		@extend .interface;
@@ -111,6 +112,9 @@ canvas {
 }
 .no-artist .title { width: calc(100% - 80px); }
 
+.visiable li {
+	display: inline-block !important;
+}
 #audio-dropArea {
 	background: none;
 	display: none;

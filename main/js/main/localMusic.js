@@ -54,10 +54,10 @@ function localMusic(ui) {
 			if (stats.isDirectory()) {
 				fs.readdir(dir, function(err, files) {
 					checkFiles(dir, files);
-					levelsDown()
+					levelsDown();
 				});
 			} else {
-				levelsDown()
+				levelsDown();
 			}
 		});
 	}
@@ -129,7 +129,6 @@ function localMusic(ui) {
 				idList.push('pc-'+ id);
 				var options = {delete: true};
 				model += player.songHtml('pc', id, url, title, artist, duration, '', options);
-				// console.log(player.songHtml('pc', id, url, title, artist, duration, '', options));
 			});
 
 			for (var c = idList.length - 1; c >= 0; c--){
@@ -199,7 +198,7 @@ function localMusic(ui) {
 					playlists.stopLoad('with-songs');
 				}
 			}
-			// console.log(elem(counter));
+
 			dur.src = getSrc(counter);
 
 			function elem(counter) {

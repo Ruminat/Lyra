@@ -10,29 +10,18 @@
 		<li class="item" id="S-customization"><h5>Кастомизация</h5>
 	</ul>
 
-	<div class="section" id="sec-common">
-		<div class="wrap" id="settings-wrap">
-			<div class="item">
-				<div class="check" id="S-status"></div>
-				<p>Транслировать играющую музыку в мой статус Вконтакте</p>
-			</div>
-			<div class="item checked">
-				<div class="check" id="S-tips"></div>
-				<p>Включить подсказки</p>
-			</div>
-			<div class="item checked">
-				<div class="check" id="S-visualization"></div>
-				<p>Включить аудиовизуализатор</p>
-			</div>
+	<div class="dividing-line"></div>
 
-		</div>
+	<div class="section" id="sec-common">
+		<% include settings/common %>
+
 		<div class="scroll-parent" id="settings-scroll">
 			<div class="scroll" id="settings-scroller"></div>
 		</div>
 	</div>
 	<div class="bottom">
 		<div class="button green-BG" id="save-settings">Сохранить</div>
-		<div class="button red-BG" id="cancel">Отмена</div>
+		<div class="button red-BG" id="S-cancel">Отмена</div>
 	</div>
 	
 </div>

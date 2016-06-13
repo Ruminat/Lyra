@@ -1,36 +1,40 @@
-//TODO:
-//make a function for hiding bars (playlists, player, e.t.c)
-//clear cache function
 function mainUI(win, vk) {
 	var that = this;
 	this.ui = {
-		songs: {
-			painted: false,
-			enter: false,
-			scroll: false,
-			state: 'idle'
+		songs: { 
+			divScroll: 0,
+			painted:   false,
+			scroll:    false,
+			enter:     false,
+			state:     'idle',
+			songH:     32,
+			wrapH:     $('#songs-wrap').height(),
+			list:      []
 		},
 		savedVolume: 0
 	};
+	//spw means SongsPerWrap (how many songs can feet in songs-wrap)
+	that.ui.songs.spw   = low(that.ui.songs.wrapH / that.ui.songs.songH);
+	that.ui.songs.range = {from: 0, to: that.ui.songs.spw + 1};
 	
 	window.localMusic = new PcMusic(this.ui);
 	window.checkers   = new Checkers();
 	var groups        = new Groups();
-	var songsEvents   = new SongsEvents(that);
 	var settings      = new Settings();
+	var songsEvents   = new SongsEvents(that);
 	
-	var searchElem    = $('#search-container');
-	window.ctxMenu    = $('.context-menu');
-	window.tip        = $('.tip');
-	var ctxDelay      = new delay(500, function() { ctxMenu.css('display', 'none');    });
-	var searchDelay   = new delay(500, function() { searchElem.css('display', 'none'); });
+	var searchElem     = $('#search-container');
+	window.ctxMenu     = $('.context-menu');
+	window.tip         = $('.tip');
+	var ctxDelay       = new delay(500, function() { ctxMenu.css('display', 'none');    });
+	var searchDelay    = new delay(500, function() { searchElem.css('display', 'none'); });
 
-	var soundRange    = new Range(true, data.mouse,    'sound-progress',    'sound-line',    changeVolume);
-	var winScroll     = new Scroll('win-scroll',       'win-scroller',      'win-wrap',      data.mouse);
-	var settScroll    = new Scroll('settings-scroll',  'settings-scroller', 'settings-wrap', data.mouse);
-	var songsScroll   = new Scroll('songs-scroll',     'songs-scroller',    'songs-wrap',    data.mouse, that.changeScroll);
+	var soundRange     = new Range(true, data.mouse,    'sound-progress',    'sound-line',    changeVolume);
+	window.winScroll   = new Scroll('win-scroll',       'win-scroller',      'win-wrap',      data.mouse);
+	window.settScroll  = new Scroll('settings-scroll',  'settings-scroller', 'settings-wrap', data.mouse);
+	window.songsScroll = new Scroll('songs-scroll',     'songs-scroller',    'songs-wrap',    data.mouse, that.changeScroll, songsScrolling);
 
-	var srch = {
+	this.srch = {
 		by:     new checkers.radio('.search .artist-title'),
 		sort:   new checkers.radio('.search .sort .choose'),
 		checks: new checkers.checks(['#srch-text-only']),
@@ -88,6 +92,12 @@ function mainUI(win, vk) {
 		songsScroll.check();
 		settScroll.check();
 	}
+	//Make first ${spw} songs visiable
+	this.makeSongsVisiable = function() {
+		for (var c = 0; c <= that.ui.songs.spw + 1; c++) { 
+			$(that.ui.songs.list[c]).addClass('visiable'); 
+		}
+	}
 
 	this.inActive = function(condition, sections, cls, desc) {
 		if (condition) {
@@ -138,12 +148,12 @@ function mainUI(win, vk) {
 		if (data.check) e.stopImmediatePropagation();
 	});
 
-	$('#logout').click(function()     { vk.logout(win, data); });
 	$('#empty').click(function()      { player.emptySongs(); });
+	$('#logout').click(function()     { vk.logout(); 			   });
 	//Player buttons
-	$('#play-pause').click(function() { audio.toggle(); });
-	$('#next-song').click(function()  { player.nextSong(); });
-	$('#prev-song').click(function()  { player.prevSong(); });
+	$('#play-pause').click(function() { audio.toggle(); 		 });
+	$('#next-song').click(function()  { player.nextSong();	 });
+	$('#prev-song').click(function()  { player.prevSong();	 });
 	$('#repeat').click(function() {
 		player.repeat = !player.repeat; 
 		$(this).toggleClass('active-low');
@@ -219,10 +229,10 @@ function mainUI(win, vk) {
 				}
 			}
 			var params = `lyrics=${lyrics}&sort=${sort}&performer_only=${artist}`;
-			srch.pos = 0;
-			srch.query = `q=`+ $(this).val() +`&count=${srch.count}&auto_complete=1&`+ params;
+			that.srch.pos = 0;
+			that.srch.query = `q=`+ $(this).val() +`&count=${that.srch.count}&auto_complete=1&`+ params;
 
-			vk.request('audio.search', srch.query, function(res) {
+			vk.request('audio.search', that.srch.query, function(res) {
 				if (isSet(res)) {
 					player.emptySongs();
 					var model = vk.addSongs(res.response.items);
@@ -234,6 +244,8 @@ function mainUI(win, vk) {
 
 			    data.state = 'search';
 			    playlists.turnPlaylist();
+			    songsScroll.scroll(0);
+			    that.makeSongsVisiable();
 				}
 			});
 			function isChecked(what) { return what.className.indexOf('checked') != -1; }
@@ -265,6 +277,41 @@ function mainUI(win, vk) {
 		player.changeVolume(per);
 	}
 	this.songsIconParent = function(elem) { return elem.parent().parent().parent().parent().parent(); }
+	function songsScrolling($wrap) {
+		var div = low($wrap.scrollTop() / that.ui.songs.songH);
+		if (div != that.ui.songs.divScroll) {
+			that.ui.songs.divScroll = div;
+			//Change songs' display
+			// var range = that.ui.songs.range;
+			var from  = (div < 2) ? 0 : (div - 1);
+			var to    = div + that.ui.songs.spw + 1;
+			if (to   >= player.list.length) to--;
+
+			/*if (from > range.from) {
+				var more  = (from > range.to);
+
+				var start = range.from;
+				var end   = more ? range.to : from;
+
+				var Start = more ? from : range.to;
+				var End   = to;
+			} else if (from < range.from) {
+				var less  = (to < range.from);
+
+				var start = range.to;
+				var end   = less ? to : range.from;
+
+				var Start = from;
+				var End   = less ? range.from : to;
+			}*/
+
+			// for (var c = start; c <= end; c++) { $(that.ui.songs.list[c]).removeClass('visiable'); }
+			$('.song').removeClass('visiable');
+			for (var c = from; c <= to; c++) { $(that.ui.songs.list[c]).addClass('visiable'); }
+
+			// that.ui.songs.range.from = from; that.ui.songs.range.to = to;
+		}
+	}
 }
 
 module.exports = mainUI;

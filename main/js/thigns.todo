@@ -1,0 +1,9 @@
+#TODO
+ ☐ make a function for hiding bars (playlists, player, e.t.c)
+ ☐ clear cache function
+ ☐ make the "settings"
+ ☐ make the "friends", "communities" e.t.c.
+ ☐ make a downloads icon
+ ☐ make an audio equalizer
+ ☐ take care of vk status (and status_audio)
+ ☐ learn about memory leaks in JavaScript (and, maybe, Electron)

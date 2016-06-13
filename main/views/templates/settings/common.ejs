@@ -1,0 +1,49 @@
+<div class="wrap" id="settings-wrap">
+	<div id="S-vk-wrap">
+		<h5>ВКонтакте</h5>
+		<div class="block" id="vk-info">
+			<div class="photo inline" id="vk-photo" style="width: 100px; height: 100px;"></div>
+			<div class="right">
+				<h5 id="vk-name"></h5>
+				<p class="status" id="vk-status"><!-- Reality is an illusion, the universe is a hologram, buy gold, bye! --></p>
+				<div class="button red-BG" id="S-quit">Выйти</div>
+			</div>
+		</div>
+		<div class="item">
+			<div class="check" id="S-status"></div>
+			<p>Транслировать играющую музыку в мой статус ВКонтакте</p>
+		</div>
+	</div>
+
+	<div id="S-downloads">
+		<h5>Загрузки и кэш</h5>
+		<p class="desc">Путь для сохранения файлов</p>
+		<div class="align vertical">
+			<% var id = 'downloads-path'; %>
+			<% include ../../svg/folder %>
+			<input class="path" id="downloads-path-in" type="text" placeholder="Выберите путь для загрузок">
+		</div>
+		<div class="item">
+			<div class="check" id="S-cacheSongs"></div>
+			<p>Кэшировать музыку</p>
+		</div>
+		<p class="desc">Путь для кэша аудиозаписей</p>
+		<div class="align vertical">
+			<% var id = 'cache-path'; %>
+			<% include ../../svg/folder %>
+			<input class="path" id="cahce-path-in" type="text" placeholder="Выберите путь для кэша">
+		</div>
+	</div>
+	
+	<div id="S-other-wrap">
+		<h5>Другое</h5>
+		<div class="item checked">
+			<div class="check" id="S-tips"></div>
+			<p>Включить подсказки</p>
+		</div>
+		<div class="item checked">
+			<div class="check" id="S-visualization"></div>
+			<p>Включить аудиовизуализатор</p>
+		</div>
+	</div>
+</div>

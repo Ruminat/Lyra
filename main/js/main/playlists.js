@@ -54,12 +54,14 @@ function playlists(data) {
 					applyModel(model);
 					that.stopLoad('with-songs');
 				}
+				songsScroll.scroll(0);
 			});
 		} else if (id == 'my-audio') {
 			that.turnPlaylist(id);
 			$('#srch-total-found').text('');
 			vk.getAudio();
 			data.state = 'vk';
+			songsScroll.scroll(0);
 		}
 	});
 	$('.playlists').on('contextmenu', '.playlist', function(e) {
@@ -172,6 +174,7 @@ function playlists(data) {
 		data.playlists.state = 'idle';
 		if (isSet(withSongs)) mainUI.ui.songs.state = 'idle';
 		$('.playlists .waiting').removeClass('on');
+		mainUI.makeSongsVisiable();
 	}
 	this.turnPlaylist = function(id) {
 		$('.playlist').removeClass('activeC');

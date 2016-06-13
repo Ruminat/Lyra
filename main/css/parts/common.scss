@@ -116,9 +116,11 @@ h5 { font-size: 20px; }
 h6 { font-size: 18px; }
 p  { @extend .font;   }
 
+.inline { display: inline-block; }
+
 .tip, .context-menu {
 	position: fixed;
-	z-index: 618618;
+	z-index: 110 !important;
 	padding: 3px;
 	display: none;
 	background: $white;
@@ -141,6 +143,9 @@ p  { @extend .font;   }
 	background: rgba(0, 0, 0, 0.2);
 	margin: 5px 0;
 }
+.align      { display: flex;           }
+.vertical   { align-items: center;     }
+.horizontal { justify-content: center; }
 
 .container {
 	padding: 5px;

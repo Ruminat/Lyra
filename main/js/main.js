@@ -1,45 +1,47 @@
-//Node modules
- var globalShortcut = remote.globalShortcut;
- var request        = require('request');
- var path           = require('path');
- var fs             = require('fs');
+//Node and Electron modules
+	var globalShortcut = remote.globalShortcut;
+	var dialog         = remote.dialog;
+	var request        = require('request');
+	var path           = require('path');
+	var fs             = require('fs');
 
 //My modules
- var SongsEvents = require('./../js/main/modules/songs-events.js');
- var Settings    = require('./../js/main/modules/settings.js');
- var Groups      = require('./../js/main/modules/groups.js');
- var PcMusic     = require('./../js/main/localMusic.js');
- var Playlists   = require('./../js/main/playlists.js');
- var MainUI      = require('./../js/main/main-ui.js');
- var Player      = require('./../js/main/player.js');
- var Audio       = require('./../js/main/audio.js');
- var Vk          = require('./../js/main/vk.js');
- 
- var Range       = require('./../js/range.js');
- var Scroll      = require('./../js/scroll.js');
- var Checkers    = require('./../js/checkers.js');
- var Storage     = require('./../js/dataStorage.js');
+	var SongsEvents = require('./../js/main/modules/songs-events.js');
+	var Settings    = require('./../js/main/modules/settings.js');
+	var Groups      = require('./../js/main/modules/groups.js');
+	var PcMusic     = require('./../js/main/localMusic.js');
+	var Playlists   = require('./../js/main/playlists.js');
+	var MainUI      = require('./../js/main/main-ui.js');
+	var Player      = require('./../js/main/player.js');
+	var Audio       = require('./../js/main/audio.js');
+	var Vk          = require('./../js/main/vk.js');
+	
+	var Range       = require('./../js/range.js');
+	var Scroll      = require('./../js/scroll.js');
+	var Checkers    = require('./../js/checkers.js');
+	var Storage     = require('./../js/dataStorage.js');
 
  //Main object
-var data = {
+window.data = {
 	connection: navigator.onLine,
 	check: true,
 	focus: true,
 	state: 'none',
 	playlists: {
-		num: -1,
-		list: [],
+		num:   -1,
+		list:  [],
 		state: 'idle'
 	},
-	settings: {
-		saved: {
-			volume: 1
-		},
-		download: {}
-	},
 	mouse: {
-		move: function(){},
-		up:   function(){}
+		move: function() {},
+		up:   function() {}
+	}
+};
+//'s' means settings
+window.s = {
+	volume: 1,
+	downloads: {
+		path: ''
 	}
 };
 

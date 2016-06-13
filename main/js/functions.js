@@ -1,9 +1,6 @@
-function isSet(v) {
-  return (typeof(v) == 'undefined') ? false : true;
-}
-function random(min, max) {
-  return Math.round( Math.random() * (max - min) + min );
-}
+window.low    = (x) => Math.floor(x);
+window.isSet  = (v) => (typeof(v) == 'undefined') ? false : true;
+window.random = (min, max) => Math.round( Math.random() * (max - min) + min );
 //Returns readable directory
 function dirToRight(dir) {
   var newDir = "";
@@ -50,15 +47,6 @@ function parseSec(sec) {
     return mins.toString() +":"+ seconds.toString();
   }
 }
-// function check() {
-//   var r = random(0, 10000) / 19;
-//   console.log(r +' '+ parseSec(r));
-// }
-// check();
-// check();
-// check();
-// check();
-// check();
 //Parse format 2:28 to seconds
 function parseTime(time) {
   var parts = time.split(':');

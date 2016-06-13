@@ -233,81 +233,6 @@
 	</div>
 </div>
 
-	<div class="settings">
-	<div class="S-top">
-		
-		<svg class="icon fill" id=close-settings version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 224.512 224.512" style="enable-background:new 0 0 224.512 224.512;" xml:space="preserve">
-<g>
-	<polygon points="224.507,6.997 217.521,0 112.256,105.258 6.998,0 0.005,6.997 105.263,112.254 
-		0.005,217.512 6.998,224.512 112.256,119.24 217.521,224.512 224.507,217.512 119.249,112.254 	"/>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-</svg>
-
-	</div>
-	<ul class="navigation">
-		<li class="item activeC" id="S-common"><h5>Общие</h5>
-		<li class="item" id="S-audio"><h5>Аудио</h5>
-		<li class="item" id="S-audio"><h5>Горячие клавиши</h5>
-		<li class="item" id="S-customization"><h5>Кастомизация</h5>
-	</ul>
-
-	<div class="section" id="sec-common">
-		<div class="wrap" id="settings-wrap">
-			<div class="item">
-				<div class="check" id="S-status"></div>
-				<p>Транслировать играющую музыку в мой статус Вконтакте</p>
-			</div>
-			<div class="item checked">
-				<div class="check" id="S-tips"></div>
-				<p>Включить подсказки</p>
-			</div>
-			<div class="item checked">
-				<div class="check" id="S-visualization"></div>
-				<p>Включить аудиовизуализатор</p>
-			</div>
-
-		</div>
-		<div class="scroll-parent" id="settings-scroll">
-			<div class="scroll" id="settings-scroller"></div>
-		</div>
-	</div>
-	<div class="bottom">
-		<div class="button green-BG" id="save-settings">Сохранить</div>
-		<div class="button red-BG" id="cancel">Отмена</div>
-	</div>
-	
-</div>
 	<div class="main">
 		<canvas id="canvas"></canvas>
 		<div class="songs" id="songs">
@@ -1124,8 +1049,193 @@
 	</div>
 </div>
 
+		<div class="settings">
+	<div class="S-top">
+		
+		<svg class="icon fill" id=close-settings version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 224.512 224.512" style="enable-background:new 0 0 224.512 224.512;" xml:space="preserve">
+<g>
+	<polygon points="224.507,6.997 217.521,0 112.256,105.258 6.998,0 0.005,6.997 105.263,112.254 
+		0.005,217.512 6.998,224.512 112.256,119.24 217.521,224.512 224.507,217.512 119.249,112.254 	"/>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+
+	</div>
+	<ul class="navigation">
+		<li class="item activeC" id="S-common"><h5>Общие</h5>
+		<li class="item" id="S-audio"><h5>Аудио</h5>
+		<li class="item" id="S-audio"><h5>Горячие клавиши</h5>
+		<li class="item" id="S-customization"><h5>Кастомизация</h5>
+	</ul>
+
+	<div class="dividing-line"></div>
+
+	<div class="section" id="sec-common">
+		<div class="wrap" id="settings-wrap">
+	<div id="S-vk-wrap">
+		<h5>ВКонтакте</h5>
+		<div class="block" id="vk-info">
+			<div class="photo inline" id="vk-photo" style="width: 100px; height: 100px;"></div>
+			<div class="right">
+				<h5 id="vk-name"></h5>
+				<p class="status" id="vk-status"><!-- Reality is an illusion, the universe is a hologram, buy gold, bye! --></p>
+				<div class="button red-BG" id="S-quit">Выйти</div>
+			</div>
+		</div>
+		<div class="item">
+			<div class="check" id="S-status"></div>
+			<p>Транслировать играющую музыку в мой статус ВКонтакте</p>
+		</div>
+	</div>
+
+	<div id="S-downloads">
+		<h5>Загрузки и кэш</h5>
+		<p class="desc">Путь для сохранения файлов</p>
+		<div class="align vertical">
+			
+			<?xml version="1.0" encoding="iso-8859-1"?>
+<svg class="icon with-tip" id=downloads-path data="Обзор" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 60 60" style="enable-background:new 0 0 60 60;" xml:space="preserve">
+<path d="M26.525,10.5l-4.618-6.451L21.515,3.5H0v53h60v-46H26.525z M58,12.5v5H31.536l-3.579-5H58z M2,54.5v-49h18.485l5,7h0.012
+	l4.69,6.551c0.195,0.272,0.501,0.417,0.813,0.418V19.5h27v35H2z"/>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+
+			<input class="path" id="downloads-path-in" type="text" placeholder="Выберите путь для загрузок">
+		</div>
+		<div class="item">
+			<div class="check" id="S-cacheSongs"></div>
+			<p>Кэшировать музыку</p>
+		</div>
+		<p class="desc">Путь для кэша аудиозаписей</p>
+		<div class="align vertical">
+			
+			<?xml version="1.0" encoding="iso-8859-1"?>
+<svg class="icon with-tip" id=cache-path data="Обзор" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 60 60" style="enable-background:new 0 0 60 60;" xml:space="preserve">
+<path d="M26.525,10.5l-4.618-6.451L21.515,3.5H0v53h60v-46H26.525z M58,12.5v5H31.536l-3.579-5H58z M2,54.5v-49h18.485l5,7h0.012
+	l4.69,6.551c0.195,0.272,0.501,0.417,0.813,0.418V19.5h27v35H2z"/>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+
+			<input class="path" id="cahce-path-in" type="text" placeholder="Выберите путь для кэша">
+		</div>
+	</div>
+	
+	<div id="S-other-wrap">
+		<h5>Другое</h5>
+		<div class="item checked">
+			<div class="check" id="S-tips"></div>
+			<p>Включить подсказки</p>
+		</div>
+		<div class="item checked">
+			<div class="check" id="S-visualization"></div>
+			<p>Включить аудиовизуализатор</p>
+		</div>
+	</div>
+</div>
+
+		<div class="scroll-parent" id="settings-scroll">
+			<div class="scroll" id="settings-scroller"></div>
+		</div>
+	</div>
+	<div class="bottom">
+		<div class="button green-BG" id="save-settings">Сохранить</div>
+		<div class="button red-BG" id="S-cancel">Отмена</div>
+	</div>
+	
+</div>
+
 		<div class="context-menu"></div>
-		<div class="tip"><div>Some tip</div></div>
+		<div class="tip"><div>Some tip</div></div>		
 
 		<div class="win">
 	<div class="content">

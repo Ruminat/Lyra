@@ -41,7 +41,7 @@ function storage() {
 
 	this.readData = function() {
 		fs.readFile(data.files.settings, function(err, res) {
-			data.settings.JSON = res.toString();
+			s.JSON = res.toString();
 		});
 	}
 
@@ -78,7 +78,6 @@ function storage() {
 
 		that.readData();
 	}
-
 
 	function mkDir(dir) {
 		fs.mkdir(dir, function(err) {
