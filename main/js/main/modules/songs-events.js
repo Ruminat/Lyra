@@ -50,13 +50,49 @@ function SongsEvents(that) {
 			});
 		}
 	});
-	$('.songs').on('click', '.download', function() {
-		if (s.downloads != '') {
+	//downloads stuff
+	$('.songs').on('click', '.download:not(.in-progress)', function() {
+		if (s.downloads.path != '') {
 			var path = s.downloads.path;
 			var elem = that.songsIconParent($(this));
-			vk.download(elem, path);
+
+			let info = player.getSongData(elem[0]);
+			info.isDownloaded = false;
+			info.downloaded = () => {
+				info.isDownloaded = true;
+				$('#d-'+ info.id).addClass('done');
+			}
+
+			$(this).addClass('in-progress');
+
+			vk.download(info, path, () => {
+				$(this).removeClass('in-progress');
+				info.downloaded();
+			});
+			data.downloads.push(info);
+		} else {
+			cryingOutForError('Кажется, вы указали несуществующий путь или не указали его совсем.');
 		}
 	});
+	$('#downloads').click(() => {
+		mainUI.callWin();
+		var html = '<h4>Загрузки</h4>';
+		var d    = data.downloads;
+		if (d.length == 0) {
+			html += '<p>Нет загрузок</p>';
+		} else {
+			for (var c = d.length - 1; c >= 0; c--) {
+				var title = isSet(d[c].artist) ? `${d[c].artist} - ${d[c].title}` : d[c].title;
+				html += `<div class="item download${d[c].isDownloaded ? ' done' : ''}" id="d-${d[c].id}">`+
+					`<p class="title">${title}</p>`+
+					`<div class="icon with-tip" data="Открыть папку с загрузками"></div>`+
+				`</div>`;
+			}
+		}
+		$('#win-wrap').html(html);
+		$('.win .download .icon').click(() => { shell.openItem(s.downloads.path); });
+	});
+
 	$('.songs').on('contextmenu', '.song', function(e) {
 		var sections = [];
 		var info     = player.getSongData($(this)[0]);
@@ -114,13 +150,6 @@ function SongsEvents(that) {
 
 			that.applyWin(html);
 		}
-	});
-	$('.songs').hover(function() {
-		that.ui.songs.enter = true;
-		that.songsHover();
-	 }, function() {
-	 	that.ui.songs.enter = false;
-		that.songsHover();
 	});
 	$('#songs-wrap').scroll(function() {
 		if (data.state == 'search') {

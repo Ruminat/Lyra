@@ -18,11 +18,13 @@ canvas {
 }
 
 
-.songs{
+.songs {
 	overflow: hidden;
 	color: $black;
 	@extend .mrWhite;
 
+	ul { @include sq(100%); }
+	
 	.song {
 		height: $song-h + 10px;
 		p {
@@ -36,14 +38,15 @@ canvas {
 
 		.duration  {
 			p       			  { display: none; 																		  }
-			.download       { @include img('../img/png-jpg/download.png');        }
 			.lyrics 			  { @include img('../img/png-jpg/lyrics.png');          }
 			.add    			  { @include img('../img/png-jpg/add.png');             }
 			.delete 			  { @include img('../img/png-jpg/delete.png');          }
-			.download:hover { @include img('../img/png-jpg/download-active.png'); }
 			.lyrics:hover   { @include img('../img/png-jpg/lyrics-active.png');   }
 			.delete:hover   { @include img('../img/png-jpg/delete-active.png');   }
 			.add:hover      { @include img('../img/png-jpg/add-active.png');      }
+			.download.in-progress        		  { @include img('../img/png-jpg/download-inactive.png'); }
+			.download:not(.in-progress)       { @include img('../img/png-jpg/download.png');          }
+			.download:not(.in-progress):hover { @include img('../img/png-jpg/download-active.png');   }
 		}
 	}
 
@@ -73,7 +76,7 @@ canvas {
 
 		.delete, .add, .download { background-size: 14px; }
 		ul, li  { padding: 0;				 }
-		ul      { @include sq(100%); }
+		// ul      { @include sq(100%); }
 		.icon   { 
 			margin-top: 2px;
 			@include sq(18px);

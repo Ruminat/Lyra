@@ -294,14 +294,13 @@ function playlists(data) {
 	function stickFolder(id) {
 		mainUI.callWin();
 		var title = $('#'+ id)[0].innerText;
-		var html = '<h4>Прикрепление папок к альбому '+ title +'</h4>';
+		var html  = '<h4>Прикрепление папок к альбому '+ title +'</h4>';
 
 		storage.read(data.files.playlists, function(obj) {
-			var num = parseInt(id.substr(9, id.length));
+			var num     = parseInt(id.substr(9, id.length));
 			var folders = obj.lists[num].folders;
-			var lastID = folders.length;
-
-			var field = '<p>Бросьте вашу(и) папку(и) в это поле</p>';
+			var lastID  = folders.length;
+			var field   = '<p>Бросьте вашу(и) папку(и) в это поле</p>';
 
 			folders.list.forEach(function(item, i, arr) {
 				html += '<div class="button usual" id="folder-'+ i +'">'+ item.name +' - '+ item.dir +'</div>';
@@ -313,9 +312,9 @@ function playlists(data) {
 			$('#win-wrap').html(html);
 
 			$('.button.usual').contextmenu(function(e) {
-				var elem = $(this);
+				var elem   = $(this);
 				var thisID = elem[0].attributes.id.nodeValue;
-				thisID = thisID.substr(7, thisID.length);
+				thisID     = thisID.substr(7, thisID.length);
 				ctxMenu.html('<div class="delete">Открепить папку</div>');
 				mainUI.callMenu(e);
 				$('.context-menu .delete').click(function() {
@@ -385,6 +384,8 @@ function playlists(data) {
 	function writeToPlaylists(obj) {
 		storage.write(data.files.playlists, JSON.stringify(obj, null, ' '));
 	}
+
+	synchronize('playlists');
 }
 
 module.exports = playlists;

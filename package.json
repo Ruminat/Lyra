@@ -1,6 +1,6 @@
 {
   "name": "Lyra",
-  "version": "0.2.9",
+  "version": "0.3.0",
   "description": "Music Player for VK",
   "main": "main.js",
   "scripts": {
@@ -9,9 +9,8 @@
   "author": "ruminat",
   "license": "Apache License Version 2.0",
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-ejs": "^0.3.0"
+    "gulp": "^3.9.1",
+    "gulp-ejs": "^2.1.2"
   },
   "dependencies": {
     "request": "^2.72.0"

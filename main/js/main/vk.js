@@ -13,21 +13,21 @@ function vk(data, player) {
 	  var txt = url.substr(pos, url.length);
 
 	  if (txt != 'offline') {
-	    var result = {};
-	    var values = txt.split('&');
-	    result.token = values[0].split('=')[1];
-	    result.id    = values[2].split('=')[1];
+			var result   = {};
+			var values   = txt.split('&');
+			result.token = values[0].split('=')[1];
+			result.id    = values[2].split('=')[1];
 	    return result;
 	  } else {
 	    return false;
 	  }
 	}
 
-	this.download = function(elem, path) {
-		var info = player.getSongData(elem[0]);
-		var Path = path || '';
-		request(info.url).pipe(
-			fs.createWriteStream(`${Path}${info.artist} - ${info.title}.mp3`)
+	this.download = function(info, path, cb) {
+		request(info.url, () => {
+			if (isSet(cb)) cb();
+		}).pipe(
+			fs.createWriteStream(`${path}${info.artist} - ${info.title}.mp3`)
 		);
 	}
 
@@ -38,10 +38,10 @@ function vk(data, player) {
 
 	this.request = function(method, parameters, cb) {
 		if (data.connection && isSet(data.vk)) {
-			var url = 'https://api.vk.com/method/'+ method +'?'+
+			var url = `https://api.vk.com/method/${method}?` +
 		            (parameters == '' ? '' : parameters + '&') +
-		            'user_id=-'+ data.vk.id +'&' +
-		            'v=5.40&access_token='+ data.vk.token;
+		            `user_id=-${data.vk.id}&` +
+		            `v=5.52&access_token=${data.vk.token}`;
 		  $.get(url, function(res) {
 		  	if (isSet(cb)) cb(res);
 		  });
@@ -69,14 +69,20 @@ function vk(data, player) {
 		player.emptySongs();
 
 	  that.request('audio.get', '', function(res) {
-	  	var model = that.addSongs(res.response.items);
-	    $('.songs .wrapper').html(model);
-	    player.makeShuffle();
-	    player.stats.call();
-	    playlists.stopLoad('with-songs');
+	  	if (isSet(res)) {
+	  		var model = that.addSongs(res.response.items);
+		    $('.songs .wrapper').html(model);
+		    player.makeShuffle();
+		    player.stats.call();
+		    playlists.stopLoad('with-songs');
+	  	} else {
+	  		playlists.stopLoad('with-songs');
+	  		cryingOutForError('Вконтакте не хочет возвращать песни. Попробуйте перезапустить Lyra.');
+	  	}
 	  });
 	}
 
+	//There is no logout method in VK API, so I made this... thing
 	this.logout = function() {
 	  $.get('https://vk.com', function(res) {
 	    //parse hash from quit button

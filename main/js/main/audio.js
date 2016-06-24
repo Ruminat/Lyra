@@ -132,12 +132,14 @@ function audio(data) {
 
 	//Visualization stuff
 	jsNode.onaudioprocess = function() {
-    var array =  new Uint8Array(analyser.frequencyBinCount);
-    analyser.getByteFrequencyData(array);
+		if (that.playing && s.vs.on) {
+	    var array =  new Uint8Array(analyser.frequencyBinCount);
+	    analyser.getByteFrequencyData(array);
 
-    if (that.playing) {
     	canvas.clearRect(0, 0, w, h);
     	drawSpectrum(array);
+    } else {
+    	canvas.clearRect(0, 0, w, h);
     }
 	}
 

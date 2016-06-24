@@ -1,16 +1,16 @@
 function storage() {
-	var that = this;
+	var that  = this;
 	data.root = dirToRight(app.getPath('userData'));
 
-	var dt = data.root + 'data/'
+	var dt = data.root + 'data/';
 	data.folder = dt;
 
 	data.files = {
 		playlists: dt + 'playlists.json',
-		settings:  dt + 'settings.json'
+		settings:  dt + 'settings.json',
+		saved:     dt + 'saved.json'
 	};
 	data.dirs = {
-		pictures:  dt + 'pictures',
 		songs:     dt + 'songs'
 	};
 
@@ -40,9 +40,24 @@ function storage() {
 	}
 
 	this.readData = function() {
-		fs.readFile(data.files.settings, function(err, res) {
-			s.JSON = res.toString();
+		fs.readFile(data.files.settings, (err, res) => {
+			let sett = JSON.parse(res.toString());
+			if (isSet(sett.status)) s = sett;
+			else that.write(data.files.settings, JSON.stringify(s));
 		});
+		fs.readFile(data.files.saved,    (err, res) => {
+			saved = JSON.parse(res.toString());
+			synchronize('storage');
+		});
+	}
+
+	this.saved = {};
+	this.savedDelay = new delay(250, () => {
+		that.write(data.files.saved, JSON.stringify(that.saved));
+	});
+	this.changeSaved = function(change) {
+		change();
+		that.savedDelay.call();
 	}
 
 	function findData() {
@@ -73,7 +88,12 @@ function storage() {
 		}
 
 		for (file in data.files) {
-			fs.appendFileSync(data.files[file], '');
+			// fs.appendFileSync(data.files[file], '');
+			try {
+				fs.statSync(data.files[file]);
+			} catch (err) {
+				fs.appendFileSync(data.files[file], '{}');
+			}
 		}
 
 		that.readData();

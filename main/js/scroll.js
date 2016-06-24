@@ -1,8 +1,8 @@
 function scroll(parentScrollID, scrollerID, wrapperID, mouse, funcs, scrolling) {
 	if (typeof funcs == 'object') {
-		var down = isSet(funcs[0]) ? funcs[0] : function(){};
-		var up   = isSet(funcs[1]) ? funcs[1] : function(){};
-	} else { down = up = function(){}; }
+		var down = isSet(funcs[0]) ? funcs[0] : () => {};
+		var up   = isSet(funcs[1]) ? funcs[1] : () => {};
+	} else { down = up = () => {}; }
 
 	var that    = this;
 	var $scroll = $('#'+ scrollerID);
@@ -10,20 +10,20 @@ function scroll(parentScrollID, scrollerID, wrapperID, mouse, funcs, scrolling) 
 	var $wrap   = $('#'+ wrapperID);
 	var wrap    = document.getElementById(wrapperID);
 	var scroll  = document.getElementById(scrollerID);
-	mouse.move  = function() {};
-	var space   = function() { return wrap.scrollHeight - $wrap.height();   };
-	var height  = function() { return $parent.height()  - $scroll.height(); };
+	mouse.move  = () => {};
+	var space   = () => { return wrap.scrollHeight - $wrap.height();   };
+	var height  = () => { return $parent.height()  - $scroll.height(); };
 
-	$(document).mouseup(function() { up(); });
+	$(document).mouseup(() => { up(); });
 
-	$scroll.mousedown(function(e) {
+	$scroll.mousedown((e) => {
 		$('.select').addClass('no-select');
 		down();
 
 		mouse.startY = e.pageY;
 		scroll.startY = $scroll.position().top;
 
-		mouse.move = function(e) {
+		mouse.move = (e) => {
 			mouse.y = e.pageY;
 			var dist = scroll.startY + mouse.y - mouse.startY;
 
@@ -40,17 +40,15 @@ function scroll(parentScrollID, scrollerID, wrapperID, mouse, funcs, scrolling) 
 		}
 	});
 
-	that.scrollingCheck = function() {
-		if (isSet(scrolling)) scrolling($wrap);
-	}
+	this.scrollingCheck = () => { if (isSet(scrolling)) scrolling($wrap); }
 
-	$wrap.scroll(function() {
+	$wrap.scroll(() => {
 		var percent = $wrap.scrollTop() / space();
 		$scroll.css('top', (height() * percent) + 'px');
 		if (isSet(scrolling)) scrolling($wrap);
 	});
 
-	this.check = function() {
+	this.check = () => {
 		var w = $wrapper()[0];
 		if (w.scrollHeight > w.clientHeight) {
 			$scroll.css('display', 'block');
@@ -59,7 +57,7 @@ function scroll(parentScrollID, scrollerID, wrapperID, mouse, funcs, scrolling) 
 		}
 	}
 
-	this.scroll = function(val) {
+	this.scroll = (val) => {
 		$wrap.scrollTop(val);
 		$scroll.css('top', val + 'px');
 	}

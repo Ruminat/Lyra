@@ -21,6 +21,32 @@ $win-top-h: 20px;
 		@extend .font; 
 	}
 
+	.item {
+		width: 100%;
+		height: 20px;
+		padding: 5px;
+		margin-bottom: 5px;
+		@extend .flex-center;
+
+		p {
+			text-align: left;
+			flex-grow: 1;
+		}
+	}
+	.item:hover { @extend .mrPale; }
+	.item.done  {
+		background: $green-low;
+	}
+	.item.done:hover {
+		background: $green;
+	}
+	.item.download .icon {
+		@include img('../img/png-jpg/folder.png');
+	}
+	.item.download .icon:hover {
+		@include img('../img/png-jpg/folder-active.png');
+	}
+
 	.content {
 		width: 60vw;
 		max-height: 80vh;
@@ -49,7 +75,7 @@ $win-top-h: 20px;
 		@extend .usual-button;
 	}
 	.button.active:hover { color: $active; }
-	.icon { @include sq($win-top-h); }
+	.icon  { @include sq($win-top-h); }
 	.field {
 		width: calc(100% - 14px);
 		border: 2px dashed #bbb;

@@ -10,7 +10,7 @@
 			</div>
 		</div>
 		<div class="item">
-			<div class="check" id="S-status"></div>
+			<div class="check" id="S-_status_"></div>
 			<p>Транслировать играющую музыку в мой статус ВКонтакте</p>
 		</div>
 	</div>
@@ -19,31 +19,31 @@
 		<h5>Загрузки и кэш</h5>
 		<p class="desc">Путь для сохранения файлов</p>
 		<div class="align vertical">
-			<% var id = 'downloads-path'; %>
+			<% var id = 'S-_downloads-path_'; %>
 			<% include ../../svg/folder %>
-			<input class="path" id="downloads-path-in" type="text" placeholder="Выберите путь для загрузок">
+			<input class="path" id="S-_downloads-path_-in" type="text" placeholder="Выберите путь для загрузок">
 		</div>
-		<div class="item">
-			<div class="check" id="S-cacheSongs"></div>
+		<!-- <div class="item">
+			<div class="check" id="S-_cache-on_"></div>
 			<p>Кэшировать музыку</p>
 		</div>
 		<p class="desc">Путь для кэша аудиозаписей</p>
-		<div class="align vertical">
-			<% var id = 'cache-path'; %>
-			<% include ../../svg/folder %>
-			<input class="path" id="cahce-path-in" type="text" placeholder="Выберите путь для кэша">
-		</div>
+		<div class="align vertical"> -->
+			<% /*var id = 'S-_cache-path_';*/ %>
+			<% /*include ../../svg/folder*/ %>
+			<!-- <input class="path" id="S-_cache-path_-in" type="text" placeholder="Выберите путь для кэша">
+		</div> -->
 	</div>
 	
 	<div id="S-other-wrap">
 		<h5>Другое</h5>
-		<div class="item checked">
-			<div class="check" id="S-tips"></div>
+		<div class="item">
+			<div class="check" id="S-_tips_"></div>
 			<p>Включить подсказки</p>
 		</div>
-		<div class="item checked">
-			<div class="check" id="S-visualization"></div>
-			<p>Включить аудиовизуализатор</p>
+		<div class="item">
+			<div class="check" id="S-_vs-on_"></div>
+			<p>Включить аудио визуализатор</p>
 		</div>
 	</div>
 </div>

@@ -1,9 +1,45 @@
-#TODO
- ☐ make a function for hiding bars (playlists, player, e.t.c)
- ☐ clear cache function
- ☐ make the "settings"
- ☐ make the "friends", "communities" e.t.c.
- ☐ make a downloads icon
- ☐ make an audio equalizer
- ☐ take care of vk status (and status_audio)
- ☐ learn about memory leaks in JavaScript (and, maybe, Electron)
+TODO:
+	☐ make a downloads icon and download events (download started, ended, aborted e.t.c)
+	☐ learn about memory leaks in JavaScript (and, maybe, Electron)
+	☐ make a function for hiding bars (playlists, player, e.t.c)
+	☐ take care of vk status (and status_audio)
+	☐ make the "friends", "communities" e.t.c.
+	☐ make an audio equalizer
+	☐ clear cache function
+	☐	change grunt by gulp
+	✔ fix songs scroll (it doesn't hide canvas) @done (16-06-20 14:11)
+	✔ add error handing with vk songs (if they don't load, or if vk API doesn't return songs) @done (16-06-17 23:03)
+ 
+☐ make the "settings"
+Settings:
+	☐	Common
+	☐	Audio
+	☐	Hotkeys
+	☐	Customization
+
+✔ optimize SVGs @done (16-06-20 11:09)
+SVGs:
+	✔ arrow @done (16-06-18 19:34)
+	✔ arrows @done (16-06-18 19:35)
+	✔ bin @done (16-06-18 19:37)
+	✔ check @done (16-06-18 19:38)
+	✔ close @done (16-06-18 19:40)
+	✔ downloads @done (16-06-18 19:17)
+	✔ eye @done (16-06-18 19:41)
+	✔ folder @done (16-06-18 19:42)
+	✔ friends @done (16-06-18 19:44)
+	✔ laptop @done (16-06-18 19:46)
+	✔ line @done (16-06-18 19:56)
+	✔ logout @done (16-06-18 19:57)
+	✔ music @done (16-06-18 19:59)
+	✔ notification @done (16-06-18 20:01)
+	✔ pause @done (16-06-18 20:02)
+	✔ people @done (16-06-18 20:03)
+	✔ play @done (16-06-18 20:04)
+	✔ refresh @done (16-06-18 20:05)
+	✔ repeat @done (16-06-18 20:06)
+	✔ resize @done (16-06-18 20:08)
+	✔ settings @done (16-06-18 20:08)
+	✔ shuffle @done (16-06-18 20:09)
+	✔ star @done (16-06-18 20:10)
+	✔ vk @done (16-06-18 20:11)

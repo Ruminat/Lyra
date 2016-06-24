@@ -1,25 +1,29 @@
 //Node and Electron modules
-	var globalShortcut = remote.globalShortcut;
-	var dialog         = remote.dialog;
-	var request        = require('request');
-	var path           = require('path');
-	var fs             = require('fs');
-
-//My modules
-	var SongsEvents = require('./../js/main/modules/songs-events.js');
-	var Settings    = require('./../js/main/modules/settings.js');
-	var Groups      = require('./../js/main/modules/groups.js');
-	var PcMusic     = require('./../js/main/localMusic.js');
-	var Playlists   = require('./../js/main/playlists.js');
-	var MainUI      = require('./../js/main/main-ui.js');
-	var Player      = require('./../js/main/player.js');
-	var Audio       = require('./../js/main/audio.js');
-	var Vk          = require('./../js/main/vk.js');
+	const globalShortcut  = remote.globalShortcut;
+	const dialog          = remote.dialog;
+	const request         = require('request');
+	const path            = require('path');
+	const fs              = require('fs');
 	
-	var Range       = require('./../js/range.js');
-	var Scroll      = require('./../js/scroll.js');
-	var Checkers    = require('./../js/checkers.js');
-	var Storage     = require('./../js/dataStorage.js');
+//My modules
+	const DefaultSettings = require('./../js/main/modules/defaultSettings.js');
+	const SongsEvents     = require('./../js/main/modules/songs-events.js');
+	const Settings        = require('./../js/main/modules/settings.js');
+	/* Module for communities (or groups) in VK */
+	const Groups          = require('./../js/main/modules/groups.js');
+	/* Module for local music on current PC */
+	const PcMusic         = require('./../js/main/localMusic.js');
+	const Playlists       = require('./../js/main/playlists.js');
+	const MainUI          = require('./../js/main/main-ui.js');
+	const Player          = require('./../js/main/player.js');
+	const Audio           = require('./../js/main/audio.js');
+	const Vk              = require('./../js/main/vk.js');
+	
+	/* Module for ranges (like song's progress, volume range e.t.c.) */
+	const Range           = require('./../js/range.js');
+	const Scroll          = require('./../js/scroll.js');
+	const Checkers        = require('./../js/checkers.js');
+	const Storage         = require('./../js/dataStorage.js');
 
  //Main object
 window.data = {
@@ -27,6 +31,14 @@ window.data = {
 	check: true,
 	focus: true,
 	state: 'none',
+	downloads: [],
+	shit: {},
+	sync: {
+		storage: false,
+		player:  false,
+		playlists: false,
+		settings: false
+	},
 	playlists: {
 		num:   -1,
 		list:  [],
@@ -38,12 +50,25 @@ window.data = {
 	}
 };
 //'s' means settings
-window.s = {
-	volume: 1,
-	downloads: {
-		path: ''
+window.s = DefaultSettings();
+//saved parameters (like volume, shuffle, repeat e.t.c.)
+window.saved = {};
+//Synchronize between dataStorage and other modules
+window.synchronize = (what) => {
+	data.sync[what] = true;
+	if (data.sync.storage) {
+		check(player,    'player');
+		check(settings,  'settings');
+		check(playlists, 'playlists');
 	}
-};
+
+	function check(mod, name) {
+		if (data.sync[name]) {
+			mod.initialize();
+			data.sync[name] = false;
+		}
+	}
+}
 
 $(document).ready(function() {
 
@@ -65,9 +90,4 @@ $(document).ready(function() {
 		vk.online();
 		data.state = 'vk';
 	}
-
-	playlists.initialize();
-	
-	//Volume change (gotta rid of it in production)
-	player.changeVolume(0.5);
 });

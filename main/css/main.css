@@ -6,7 +6,7 @@
   background: rgba(0, 0, 0, 0.8);
 }
 
-.mrPale, .usual-button:hover, .right-menu .playlist:hover, .win .button.usual:hover, .songs .song:hover {
+.mrPale, .usual-button:hover, .right-menu .playlist:hover, .win .button.usual:hover, .songs .song:hover, .win .item:hover {
   background: rgba(0, 0, 0, 0.03);
 }
 
@@ -20,7 +20,7 @@
   font: 16px 'Scada', Trebuchet MS, georgia, arial, verdana;
 }
 
-.flex-center, .usual-button, .right-menu .playlist, .win .button.usual, .radio-check, .top-menu ul, .right-menu .container .item, .menu .button, .win .field, .loader, .settings .bottom, .settings .item {
+.flex-center, .usual-button, .right-menu .playlist, .win .button.usual, .radio-check, .top-menu ul, .right-menu .container .item, .menu .button, .win .item, .win .field, .loader, .settings .bottom, .settings .item {
   display: flex;
   align-items: center;
 }
@@ -270,7 +270,7 @@ h6 {
 
 .tip, .context-menu {
   position: fixed;
-  z-index: 110 !important;
+  z-index: 3228;
   padding: 3px;
   display: none;
   background: #F3F3F3;
@@ -502,11 +502,11 @@ h6 {
 
 .top-menu .stats {
   position: absolute;
-  width: calc(100% - 11px);
+  width: calc(100% - 6px);
   height: 25px;
   bottom: 0;
   border-bottom: 2px solid #BEBEBE;
-  padding: 0 5px;
+  padding-left: 5px;
 }
 
 .top-menu ul {
@@ -820,6 +820,11 @@ canvas {
   color: #2F2F2F;
 }
 
+.songs ul {
+  width: 100%;
+  height: 100%;
+}
+
 .songs .song {
   height: 32px;
 }
@@ -831,10 +836,6 @@ canvas {
 
 .songs .song:hover .duration p {
   display: none;
-}
-
-.songs .song:hover .duration .download {
-  background-image: url("../img/png-jpg/download.png");
 }
 
 .songs .song:hover .duration .lyrics {
@@ -849,10 +850,6 @@ canvas {
   background-image: url("../img/png-jpg/delete.png");
 }
 
-.songs .song:hover .duration .download:hover {
-  background-image: url("../img/png-jpg/download-active.png");
-}
-
 .songs .song:hover .duration .lyrics:hover {
   background-image: url("../img/png-jpg/lyrics-active.png");
 }
@@ -863,6 +860,18 @@ canvas {
 
 .songs .song:hover .duration .add:hover {
   background-image: url("../img/png-jpg/add-active.png");
+}
+
+.songs .song:hover .duration .download.in-progress {
+  background-image: url("../img/png-jpg/download-inactive.png");
+}
+
+.songs .song:hover .duration .download:not(.in-progress) {
+  background-image: url("../img/png-jpg/download.png");
+}
+
+.songs .song:hover .duration .download:not(.in-progress):hover {
+  background-image: url("../img/png-jpg/download-active.png");
 }
 
 .songs .added {
@@ -905,11 +914,6 @@ canvas {
 
 .songs .duration ul, .songs .duration li {
   padding: 0;
-}
-
-.songs .duration ul {
-  width: 100%;
-  height: 100%;
 }
 
 .songs .duration .icon {
@@ -993,6 +997,34 @@ canvas {
 
 .win pre {
   text-align: left;
+}
+
+.win .item {
+  width: 100%;
+  height: 20px;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+.win .item p {
+  text-align: left;
+  flex-grow: 1;
+}
+
+.win .item.done {
+  background: #A7E8BD;
+}
+
+.win .item.done:hover {
+  background: #97F5AD;
+}
+
+.win .item.download .icon {
+  background-image: url("../img/png-jpg/folder.png");
+}
+
+.win .item.download .icon:hover {
+  background-image: url("../img/png-jpg/folder-active.png");
 }
 
 .win .content {
@@ -1251,3 +1283,5 @@ canvas {
 .settings, .settings .section, .settings .bottom {
   box-sizing: border-box;
 }
+
+/*# sourceMappingURL=main.css.map */

@@ -1,6 +1,14 @@
 window.low    = (x) => Math.floor(x);
 window.isSet  = (v) => (typeof(v) == 'undefined') ? false : true;
 window.random = (min, max) => Math.round( Math.random() * (max - min) + min );
+// connects object and properties
+function objProps(obj, arr) {
+  var result = obj;
+  for (var c = 0, l = arr.length; c < l - 1; c++) {
+    result = result[arr[c]];
+  }
+  return {obj: result, prop: arr[l - 1]};
+}
 //Returns readable directory
 function dirToRight(dir) {
   var newDir = "";

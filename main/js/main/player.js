@@ -52,20 +52,31 @@ function player(audio) {
 
 		shuffle(that.shuffleList, 1);
 	}
-	this.nextSong    = function() { audio.changeSong(1, that.shuffle ? that.shuffleList : that.list); }
-	this.prevSong    = function() { audio.changeSong(0, that.shuffle ? that.shuffleList : that.list); }
-	this.changeSong  = function(src, title, artist, duration) {
-		audio.elem.src = src;
-		that.duration  = duration;
-		that.loadImage(artist);
+	this.nextSong   = function() { audio.changeSong(1, that.shuffle ? that.shuffleList : that.list); }
+	this.prevSong   = function() { audio.changeSong(0, that.shuffle ? that.shuffleList : that.list); }
+	this.changeSong = function(info) {
+		audio.elem.oncanplay = function() {
+			that.duration = parseSec(audio.elem.duration);
+			$('.player .right').text(that.duration);
+			audio.elem.oncanplay = function() {};
+		}
+		that.duration  = info.duration;
+		audio.elem.src = info.url;
+
+		audio.loaded   = 0;
+		that.loaded    = false;
+		that.loadImage(info.artist);
 		audio.play();
-		audio.loaded = 0;
-		that.loaded  = false;
-    checkTitle('.menu .artist', artist);
-    checkTitle('.menu .title',  title);
-    $('.player .title').text(artist == '' ? title : artist + ' - ' + title);
-    $('.player .right').text(duration);
+    checkTitle('.menu .artist', info.artist);
+    checkTitle('.menu .title',  info.title);
+    $('.player .title').text(info.artist == '' ? info.title : info.artist + ' - ' + info.title);
+    $('.player .right').text(info.duration);
     $('.player .loaded').css('width', '0');
+
+    if (that.id.substr(0, 2) == 'vk' && s.status) {
+    	var id = that.id.substr(3, that.id.length);
+    	vk.request('audio.setBroadcast', `audio=${data.vk.id}_${id}`);
+    }
 
     function checkTitle(elem, what) {
     	if (what == '') {
@@ -81,6 +92,7 @@ function player(audio) {
 		audio.elem.volume = val;
 		$('#sound-value').text(Math.round(val * 100) + '%');
 		$('#sound-line').css('width', (val * $('#sound-progress').width()) +'px');
+		storage.changeSaved(() => { saved.volume  = val; });
 	}
 	this.findSong       = function(id, playlist) {
 		//I don't know why, but this piece of crap doesn't work with forEach
@@ -92,10 +104,10 @@ function player(audio) {
 	}
 	this.getSongData    = function(elem) {
 		var children = elem.children[0].children;
-		var result = {};
+		var result   = {};
 
-		result.id  = elem.attributes.id.nodeValue;
-		result.url = elem.attributes.url.nodeValue;
+		result.id    = elem.attributes.id.nodeValue;
+		result.url   = elem.attributes.url.nodeValue;
 		result.title = children[1].innerText;
 		
 		if (isSet(elem.attributes.owner))  { result.owner  = elem.attributes.owner.nodeValue;  }
@@ -109,15 +121,15 @@ function player(audio) {
 			} else { 
 				result.artist = ''; 
 			}
-			result.duration = children[2].innerText;
+			result.duration = children[2].children[0].innerText;
 		} else {
 			result.artist   = children[2].innerText;
-			result.duration = children[3].innerText;
+			result.duration = children[3].children[0].innerText;
 		}
 
 		result.type = result.id.substr(0, 2);
 
-		return result;
+		return Object.assign({}, result);
 	}
 	this.songHtml       = function(type, id, url, title, artist, duration, addition, options) {
 		var is = {download: false, delete: false, lyrics: false, add: false}
@@ -152,20 +164,29 @@ function player(audio) {
 		elem.addClass('activeC-low');
 
 		var info = that.getSongData(elem[0]);
-
-		if (info.duration != '') {
-			that.changeSong(info.url, info.title, info.artist, info.duration);
-		} else {
-			audio.elem.oncanplay = function() {
-				info.duration = parseSec(audio.elem.duration);
-				that.changeSong(info.url, info.title, info.artist, info.duration);
-				audio.elem.oncanplay = function(){};
-			}
-			audio.elem.src = info.url;
-		}
+		that.changeSong(info);
 
 		that.id = info.id;
 		that.playing = that.findSong(info.id);
+	}
+
+	this.switch = (what) => {
+		if (what == 'shuffle') {
+			that.shuffle = !that.shuffle;
+			storage.changeSaved(() => { saved.shuffle = that.shuffle; });
+		} else {
+			that.repeat = !that.repeat;
+			storage.changeSaved(() => { saved.repeat  = that.repeat;  });
+		}
+
+		$('#'+ what).toggleClass('active-low');
+	}
+
+	this.initialize = () => {
+		storage.saved = saved;
+		if (isSet(saved.volume)) that.changeVolume(saved.volume);
+		if (isSet(saved.shuffle) && saved.shuffle != that.shuffle) that.switch('shuffle');
+		if (isSet(saved.repeat)  && saved.repeat  != that.repeat)  that.switch('repeat');
 	}
 	
 	function updateStats() {
@@ -220,6 +241,8 @@ function player(audio) {
 		that.changeTime(per);
 	}
 	function movingTime() { isTimeMoving = true; }
+
+	synchronize('player');
 }
 
 module.exports = player;
