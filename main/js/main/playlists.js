@@ -15,7 +15,7 @@ function playlists(data) {
 	});
 
 	$('.playlists').on('click', '.playlist', function() {
-		var id = $(this).context.id;
+		var id = $(this)[0].id;
 		if (id != 'add-playlist' && id != 'my-audio') {
 			$('#srch-total-found').text('');
 			that.startLoad('with-songs');

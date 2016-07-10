@@ -1,6 +1,9 @@
-window.low    = (x) => Math.floor(x);
-window.isSet  = (v) => (typeof(v) == 'undefined') ? false : true;
+window.low    = (x)        => Math.floor(x);
+window.isSet  = (v)        => (typeof(v) == 'undefined') ? false : true;
 window.random = (min, max) => Math.round( Math.random() * (max - min) + min );
+//returns true if ctrl is pressed (cmd on Mac)
+window.ctrl   = (e)        => e.ctrlKey || e.metaKey;
+
 // connects object and properties
 function objProps(obj, arr) {
   var result = obj;

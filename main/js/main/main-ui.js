@@ -24,6 +24,7 @@ function mainUI(win, vk) {
 	var songsEvents     = new SongsEvents(that);
 	
 	var searchElem      = $('#search-container');
+	var playlistSearch  = $('#panel .songs-search');
 	window.ctxMenu      = $('.context-menu');
 	window.tip          = $('.tip');
 	var ctxDelay        = new delay(500, () => { ctxMenu.css('display', 'none');    });
@@ -65,7 +66,7 @@ function mainUI(win, vk) {
 
 		if (isSet(cb)) cb();
 	}
-	this.callMenu = (e) => {
+	this.callMenu = (e)    => {
 		ctxMenu.css('display', 'flex');
 
 		var width = ctxMenu.width();
@@ -136,6 +137,33 @@ function mainUI(win, vk) {
 				audio.toggle();
 				return false;
 			}
+		//Ctrl+F
+		} else if (ctrl(e) && e.keyCode == 70) {
+			$('#panel .icons').css('display', 'none');
+			playlistSearch.css('display', 'block');
+			playlistSearch.focus();
+		}
+	});
+	//Search songs in the current playlist
+	playlistSearch.on('input', () => {
+		var val   = playlistSearch.val().toLowerCase();
+		var songs = $('#songs-wrap')[0].children;
+		var parts = val.split('-');
+
+		// console.log(songs);
+
+		if (parts.length == 1) {
+			for (var c = 0, l = songs.length; c < l; c++) {
+				var ul = songs[c].children[0];
+				var title  = ul.children[1].innerText.toLowerCase();
+				var artist = ul.children[2].innerText.toLowerCase();
+
+				if ( (title.indexOf(val) != -1) || (artist.indexOf(val) != -1) ) {
+					$(songs[c]).removeClass('hidden');
+				} else {
+					$(songs[c]).addClass('hidden');
+				}
+			}
 		}
 	});
 
@@ -166,25 +194,59 @@ function mainUI(win, vk) {
 		if (data.check) e.stopImmediatePropagation();
 	});
 
-	$('#empty').click(()       => { player.emptySongs(); 			});
-	$('#logout').click(()      => { vk.logout(); 			   			});
+	$('#empty').click(()        => { player.emptySongs(); 			});
+	$('#logout').click(()       => { vk.logout(); 			   			});
 	//Player buttons
-	$('#play-pause').click(()  => { audio.toggle(); 		      });
-	$('#next-song').click(()   => { player.nextSong();	      });
-	$('#prev-song').click(()   => { player.prevSong();	      });
-	$('#shuffle').click(() 		 => { player.switch('shuffle'); });
-	$('#repeat').click(()  		 => { player.switch('repeat');  });
-	$('#refresh').click(() 		 => {
+	$('#play-pause').click(()   => { audio.toggle(); 		      });
+	$('#next-song').click(()    => { player.nextSong();	      });
+	$('#prev-song').click(()    => { player.prevSong();	      });
+	$('#shuffle').click(() 		  => { player.switch('shuffle'); });
+	$('#repeat').click(()  		  => { player.switch('repeat');  });
+	$('#refresh').click(() 		  => {
 		win.removeAllListeners();
 		document.location.reload();
 	});
-	$('#volume-icon').click(() => {
+	$('#volume-icon').click(()  => {
 		if (audio.elem.volume == 0) {
 			player.changeVolume(ui.savedVolume);
 		} else {
 			ui.savedVolume = audio.elem.volume;
 			player.changeVolume(0);
 		}
+	});
+	$('#menu-friends').click(() => {
+		vk.request('friends.get', 'order=hints&fields=photo_100', (res) => {
+			if (isSet(res)) {
+				that.callWin();
+				var html = '<h4>Друзья</h4>';
+				res.response.items.forEach((item, i, arr) => {
+					html += 
+					`<div class="block friend" id="friend-${item.id}">`
+						+`<div class="image" style="background-image: url('${item.photo_100}')"></div>`
+						+`<div class="info">`
+							+`<h5 class="title">${item.first_name} ${item.last_name}</h5>`
+						+`</div>`
+					+`</div>`;
+				});
+				that.applyWin(html);
+
+				$('.friend').click(function() {
+					var id = $(this)[0].id.split('-')[1];
+					vk.getAudio(id);
+					that.closeWin();
+				});
+			} else {
+				cryingOutForError('Что-то не так с Вконтакте. Проверьте свое подключение к сети или попробуйте перезайти в Lyra.');
+			}
+		});
+	});
+	$('#menu-popular').click(() => {
+		var params = `count=${es.count}`;
+		es.addSongs('audio.getPopular', params, 'popular');
+	});
+	$('#menu-recommended').click(() => {
+		var params = `count=${es.count}&shuffle=1`;
+		es.addSongs('audio.getRecommendations', params, 'recommendations');
 	});
 
 	//Crap
@@ -212,8 +274,9 @@ function mainUI(win, vk) {
 	 $(document).on('mouseleave', '.with-tip', () => {
 		$('.tip').css('display', 'none');
 	});
+	that.closeWin = () => { $('.win').css('display', 'none'); }
 	$('.win').on('click', '#close-win, #folders-cancel', () => {
-		$('.win').css('display', 'none');
+		that.closeWin();
 	});
 	$('#search-parameters-shower').click((e) => {
 		searchElem.css('display', 'block');
@@ -235,33 +298,18 @@ function mainUI(win, vk) {
 		if (e.keyCode == 13) {
 			var lyrics = isChecked($('#srch-text-only').parent()[0]) ? 1 : 0;
 			var artist = $('.search .artist-title')[0].children;
-			artist = isChecked(artist[0]) ? 0 : 1;
-			var sort = $('.search .choose')[0].children;
+			artist     = isChecked(artist[0]) ? 0 : 1;
+			var sort   = $('.search .choose')[0].children;
 			for (var c = 0; c < sort.length; c++) {
 				if (isChecked(sort[c])) {
 					sort = 2 - c; break;
 				}
 			}
 			var params = `lyrics=${lyrics}&sort=${sort}&performer_only=${artist}`;
-			that.srch.pos = 0;
-			that.srch.query = `q=`+ $(this).val() +`&count=${that.srch.count}&auto_complete=1&`+ params;
+			params     = `q=`+ $(this).val() +`&count=${es.count}&auto_complete=1&`+ params;
 
-			vk.request('audio.search', that.srch.query, (res) => {
-				if (isSet(res)) {
-					player.emptySongs();
-					var model = vk.addSongs(res.response.items);
+			es.addSongs('audio.search', params, 'search');
 
-					$('.songs .wrapper').html(model);
-			    player.makeShuffle();
-			    player.stats.call();
-			    $('#srch-total-found').text('Всего найдено: '+ formatNumber(res.response.count));
-
-			    data.state = 'search';
-			    playlists.turnPlaylist();
-			    songsScroll.scroll(0);
-			    that.makeSongsVisiable();
-				}
-			});
 			function isChecked(what) { return what.className.indexOf('checked') != -1; }
 		}
 	});

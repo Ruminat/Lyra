@@ -1,11 +1,15 @@
-'use strict';
+// 'use strict';
 
-const gulp = require('gulp');
-const ejs  = require('gulp-ejs');
+const gulp  = require('gulp');
+const ejs   = require('gulp-ejs');
+const gutil = require('gulp-util');
 
 gulp.task('ejs', () => {
 	return gulp.src('main/views/*.ejs')
-		.pipe(ejs({}, {ext: '.html'}))
+		.pipe(ejs({}, {ext: '.html'}).on('error', () => {
+			gutil.beep();
+			return false;
+		}))
 		.pipe(gulp.dest('main/views/'));
 });
 

@@ -52,9 +52,9 @@ function audio(data) {
 	this.arcs  = 18;
 	var screenSize = new delay(40, function() {
 		h = document.getElementById('canvas').height = $('canvas').height();
-		w = document.getElementById('canvas').width = $('canvas').width();
+		w = document.getElementById('canvas').width  = $('canvas').width();
 	});
-	canvas    = document.getElementById('canvas').getContext('2d');
+	canvas     = document.getElementById('canvas').getContext('2d');
 	canvas.strokeStyle = '#2F2F2F';
 	for (var c = 0; c < that.arcs; c++){
 		lines.push(c*pi / that.arcs);
@@ -93,19 +93,19 @@ function audio(data) {
 
 		if (direction == 1) {
 			if (id < playlist.length - 1) {
-				player.playing++;
+				id++;
 			} else {
-				player.playing = 0;
+				id = 0;
 			}
 		} else {
 			if (id != 0) {
-				player.playing--;
+				id--;
 			} else {
-				player.playing = playlist.length - 1;
+				id = playlist.length - 1;
 			}
 		}
-		
-		id = player.playing;
+
+		player.playing = id;
 		var elem = $('#'+ playlist[id]);
 		elem.addClass('activeC-low');
 
@@ -176,11 +176,12 @@ function audio(data) {
 		if (player.repeat) {
 			that.play();
 		} else {
-			if (player.shuffle) {
+			/*if (player.shuffle) {
 				that.changeSong(1, player.shuffleList);
 			} else {
 				that.changeSong(1, player.list);
-			}
+			}*/
+			player.nextSong();
 		}
 	}
 }

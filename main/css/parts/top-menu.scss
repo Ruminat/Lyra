@@ -50,20 +50,28 @@
 		@extend .flex-center;
 	}
 
-	#vk-stuff {
+	#panel {
 		flex-grow: 1;
 
-		div {
-			display: inline-block;
-		}
+		.right { width: 100%; }
 	}
 
-	.icon, svg {
-		@include sq(22px);
+	.icons { float: right; }
+	.songs-search {
+		display: none;
+		padding: 2.5px 5px;
+		margin: 0;
+		width: 50%;
+		float: right;
 	}
 
-	svg:hover  { fill: $active-low; }
-	svg:active { fill: $active; }
+	.icon, svg    { @include sq(22px);    }
+	.stroke       { stroke:  $black;      }
+
+	svg:active    { fill:    $active;     }
+	svg:hover     { fill:    $active-low; }
+	.stroke:hover { stroke:  $active-low; }
+	.stoke:active { stroke:  $active;     }
 }
 
 #search-box { display: none; }

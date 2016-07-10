@@ -5,13 +5,12 @@ function Groups() {
 			if (isSet(res.response)) {
 				mainUI.callWin();
 				var html   = '<h4>Сообщества</h4>';
-				// console.log(res.response.items);
 
 				res.response.items.forEach(function(item, i, arr) {
-					var photo  = item.photo_200 || item.photo_100 || item.photo_50;
+					var photo = item.photo_200 || item.photo_100 || item.photo_50;
 
 					html += 
-					`\n<div class="group" id="group-${item.id}" url="${item.screen_name}">`
+					`<div class="block group" id="group-${item.id}" url="${item.screen_name}">`
 						+`<div class="image" style="background-image: url('${photo}')"></div>`
 						+`<div class="info">`
 							+`<h5 class="title">${item.name}</h5>`
@@ -28,9 +27,14 @@ function Groups() {
 	});
 	$('.win').on('click', '.group', function() {
 		var url = $(this)[0].attributes.url.nodeValue;
-		vk.request('wall.get', `domain=${url}&count=25`, function(res) {
-			console.log(res);
-		});
+		var id  = $(this)[0].id.split('-')[1];
+
+		vk.getAudio(`-${id}`);
+		mainUI.closeWin();
+
+		// vk.request('wall.get', `domain=${url}&count=25`, function(res) {
+
+		// });
 	});
 }
 

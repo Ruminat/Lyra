@@ -52,9 +52,9 @@ function player(audio) {
 
 		shuffle(that.shuffleList, 1);
 	}
-	this.nextSong   = function() { audio.changeSong(1, that.shuffle ? that.shuffleList : that.list); }
-	this.prevSong   = function() { audio.changeSong(0, that.shuffle ? that.shuffleList : that.list); }
-	this.changeSong = function(info) {
+	this.nextSong   = ()     => { audio.changeSong(1, that.shuffle ? that.shuffleList : that.list); }
+	this.prevSong   = ()     => { audio.changeSong(0, that.shuffle ? that.shuffleList : that.list); }
+	this.changeSong = (info) => {
 		audio.elem.oncanplay = function() {
 			that.duration = parseSec(audio.elem.duration);
 			$('.player .right').text(that.duration);
@@ -139,15 +139,17 @@ function player(audio) {
 			if (isSet(options.lyrics))   is.lyrics   = options.lyrics;
 			if (isSet(options.add))      is.add      = options.add;
 		}
-		var Class    = `song`+ (type == `pc` ? ` local` : ``) + (artist == `` ? ` no-artist` : ``);
+		var cls      = `song`+ (type == `pc` ? ` local` : ``) + (artist == `` ? ` no-artist` : ``);
 		var more     = isSet(addition) ? addition : '';
 		var Artist   = (artist != ``)  ? `<li class="artist">${artist}` : ``;
 		var download = (is.download)   ? `<li><div class="download icon with-tip" data="Скачать"></div>`   + `\n` : '';
-		var lyrics   = (is.lyrics)     ? `<li><div class="lyrics icon with-tip" data="Текст песни"></div>` + `\n` : '';
 		var dlt      = (is.delete)     ? `<li><div class="delete icon with-tip" data="Удалить"></div>`     + `\n` : '';
 		var add      = (is.add)        ? `<li><div class="add icon with-tip" data="Добавить"></div>`       + `\n` : '';
+
+		var lyrics   = type == 'vk' ? `<li><div class="lyrics icon${is.lyrics ? '' : ' inactive'} with-tip" data="Текст песни"></div>\n` : '';
+
 		var result   =
-		 `<div class="${Class}" id="${type}-${id}" `
+		 `<div class="${cls}" id="${type}-${id}" `
 		+`url="${url}" ${more}>`
 			+`<ul>`
 				+`<li class="check">`

@@ -25,12 +25,12 @@
   align-items: center;
 }
 
-.bg-center, .standart-checks, .right-menu .check, .right-menu .radio-check, .settings .check, .settings .radio-check, .songs .duration .icon, .songs .pick .check, .win .group .image, .settings .photo {
+.bg-center, .standart-checks, .right-menu .check, .right-menu .radio-check, .settings .check, .settings .radio-check, .songs .duration .icon, .songs .pick .check, .win .block .image, .settings .photo {
   background-repeat: no-repeat;
   background-position: center;
 }
 
-.ellipsis, .usual-button p, .right-menu .playlist p, .win .button.usual p, .player .title, .menu .artist, .menu .title, .songs li, .win .group {
+.ellipsis, .usual-button p, .right-menu .playlist p, .win .button.usual p, .player .title, .menu .artist, .menu .title, .songs li, .win .block {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -75,6 +75,10 @@
   top: 28px;
 }
 
+.vk {
+  display: none;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -114,6 +118,10 @@ body {
 
 .center {
   text-align: center;
+}
+
+.hidden {
+  display: none;
 }
 
 .activeC-low, .usual-button input, .right-menu .playlist input, .win .button.usual input {
@@ -280,6 +288,11 @@ h6 {
 
 .tip div, .context-menu div {
   display: inline;
+}
+
+code {
+  font: 16px Trebuchet MS, monospace;
+  color: #777;
 }
 
 .context-menu {
@@ -513,12 +526,24 @@ h6 {
   height: 100%;
 }
 
-.top-menu #vk-stuff {
+.top-menu #panel {
   flex-grow: 1;
 }
 
-.top-menu #vk-stuff div {
-  display: inline-block;
+.top-menu #panel .right {
+  width: 100%;
+}
+
+.top-menu .icons {
+  float: right;
+}
+
+.top-menu .songs-search {
+  display: none;
+  padding: 2.5px 5px;
+  margin: 0;
+  width: 50%;
+  float: right;
 }
 
 .top-menu .icon, .top-menu svg {
@@ -526,12 +551,24 @@ h6 {
   height: 22px;
 }
 
-.top-menu svg:hover {
-  fill: #EB9486;
+.top-menu .stroke {
+  stroke: #2F2F2F;
 }
 
 .top-menu svg:active {
   fill: #FB8476;
+}
+
+.top-menu svg:hover {
+  fill: #EB9486;
+}
+
+.top-menu .stroke:hover {
+  stroke: #EB9486;
+}
+
+.top-menu .stoke:active {
+  stroke: #FB8476;
 }
 
 #search-box {
@@ -838,10 +875,6 @@ canvas {
   display: none;
 }
 
-.songs .song:hover .duration .lyrics {
-  background-image: url("../img/png-jpg/lyrics.png");
-}
-
 .songs .song:hover .duration .add {
   background-image: url("../img/png-jpg/add.png");
 }
@@ -850,16 +883,24 @@ canvas {
   background-image: url("../img/png-jpg/delete.png");
 }
 
-.songs .song:hover .duration .lyrics:hover {
-  background-image: url("../img/png-jpg/lyrics-active.png");
-}
-
 .songs .song:hover .duration .delete:hover {
   background-image: url("../img/png-jpg/delete-active.png");
 }
 
 .songs .song:hover .duration .add:hover {
   background-image: url("../img/png-jpg/add-active.png");
+}
+
+.songs .song:hover .duration .lyrics.inactive {
+  background-image: url("../img/png-jpg/lyrics-inactive.png");
+}
+
+.songs .song:hover .duration .lyrics:not(.inactive) {
+  background-image: url("../img/png-jpg/lyrics.png");
+}
+
+.songs .song:hover .duration .lyrics:not(.inactive):hover {
+  background-image: url("../img/png-jpg/lyrics-active.png");
 }
 
 .songs .song:hover .duration .download.in-progress {
@@ -1077,7 +1118,7 @@ canvas {
   justify-content: center;
 }
 
-.win .group {
+.win .block {
   width: calc(100% - 15px);
   margin: 20px 0;
   background: #F3F3F3;
@@ -1085,27 +1126,27 @@ canvas {
   margin-left: 15px;
 }
 
-.win .group .image {
+.win .block .image {
   width: 100px;
   height: 100px;
   background-size: cover;
   border-radius: 100%;
 }
 
-.win .group .title {
+.win .block .title {
   text-align: left;
 }
 
-.win .group .info {
+.win .block .info {
   margin-left: 10px;
 }
 
-.win .group .info * {
+.win .block .info * {
   width: 100%;
   text-align: left;
 }
 
-.win .group:hover h5 {
+.win .block:hover h5 {
   color: #FB8476;
 }
 

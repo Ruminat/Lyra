@@ -1,21 +1,27 @@
 TODO:
-	☐ make a downloads icon and download events (download started, ended, aborted e.t.c)
+	✔ make a downloads icon and download events (download started, ended, aborted e.t.c) @done (16-06-24 13:26)
+	☐	 add new APIs
+	☐ make the "friends", "communities" e.t.c.
 	☐ learn about memory leaks in JavaScript (and, maybe, Electron)
 	☐ make a function for hiding bars (playlists, player, e.t.c)
 	☐ take care of vk status (and status_audio)
-	☐ make the "friends", "communities" e.t.c.
 	☐ make an audio equalizer
 	☐ clear cache function
-	☐	change grunt by gulp
+	☐	 improve scroll with adding scrolling by touching the scroll parent
+	☐	 add scrollbars to the menu and right-menu (playlists)
+	☐	 add search
+	☐	 add a check for user's VK alboms
+	✔	 change grunt by gulp @done (16-06-24 13:25)
 	✔ fix songs scroll (it doesn't hide canvas) @done (16-06-20 14:11)
 	✔ add error handing with vk songs (if they don't load, or if vk API doesn't return songs) @done (16-06-17 23:03)
  
 ☐ make the "settings"
 Settings:
-	☐	Common
-	☐	Audio
-	☐	Hotkeys
-	☐	Customization
+	☐	 Common
+	☐	 Audio
+	☐	 Hotkeys
+	☐	 Customization
+	☐	 About
 
 ✔ optimize SVGs @done (16-06-20 11:09)
 SVGs:

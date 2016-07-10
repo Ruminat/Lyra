@@ -1,9 +1,6 @@
 function vk(data, player) {
 	var that = this;
-
-	// var VK = new BrowserWindow({width: 1920, height: 1080});
-	// VK.loadUrl('http://vk.com');
-	// VK.openDevTools();
+	var v    = '5.52';
 
 	//Parse login data (id, token)
 	this.parseLogin = function(win) {
@@ -34,14 +31,27 @@ function vk(data, player) {
 	this.online = function() {
 		$('#search-box').css('display', 'block');
 		$('#search-parameters-shower').css('display', 'block');
+		$('.vk').css('display', 'block');
+	}
+
+	this.resItems = (res) => {
+		// console.log(res.response);
+		if (isSet(res)) {
+			if (isSet(res.response.items)) return res.response.items
+			else return res.response;
+		} else return [];
+	}
+
+	this.APImethod = function(method, url) {
+		return `https://api.vk.com/method/${method}?${url}v=${v}&access_token=${data.vk.token}`;
 	}
 
 	this.request = function(method, parameters, cb) {
 		if (data.connection && isSet(data.vk)) {
 			var url = `https://api.vk.com/method/${method}?` +
 		            (parameters == '' ? '' : parameters + '&') +
-		            `user_id=-${data.vk.id}&` +
-		            `v=5.52&access_token=${data.vk.token}`;
+		            `user_id=${data.vk.id}&` +
+		            `v=${v}&access_token=${data.vk.token}`;
 		  $.get(url, function(res) {
 		  	if (isSet(cb)) cb(res);
 		  });
@@ -64,22 +74,27 @@ function vk(data, player) {
 		return model;
 	}
 
-	this.getAudio = function() {
+	this.getAudio = function(id) {
 		playlists.startLoad('with-songs');
 		player.emptySongs();
+		if (isSet(id)) playlists.turnPlaylist();
 
-	  that.request('audio.get', '', function(res) {
-	  	if (isSet(res)) {
+		var url = that.APImethod('audio.get', `owner_id=${id || data.vk.id}&`);
+
+		$.get(url, (res) => {
+			if (isSet(res) && isSet(res.response)) {
 	  		var model = that.addSongs(res.response.items);
 		    $('.songs .wrapper').html(model);
 		    player.makeShuffle();
 		    player.stats.call();
-		    playlists.stopLoad('with-songs');
+		  //If there is an id, then we're trying to access to someone else's audio
+	  	} else if (isSet(id)) {
+	  		cryingOutForError('Вконтакте не хочет возвращать аудиозаписи этого пользователя (если таковые вообще имеются).');
 	  	} else {
-	  		playlists.stopLoad('with-songs');
-	  		cryingOutForError('Вконтакте не хочет возвращать песни. Попробуйте перезапустить Lyra.');
+	  		cryingOutForError('Вконтакте не хочет возвращать аудиозаписи. Попробуйте перезапустить Lyra.');
 	  	}
-	  });
+	  	playlists.stopLoad('with-songs');
+		});
 	}
 
 	//There is no logout method in VK API, so I made this... thing
@@ -88,6 +103,7 @@ function vk(data, player) {
 	    //parse hash from quit button
 	    var search = '<a class="top_nav_link" id="logout_link" href=';
 	    var pos = res.indexOf(search);
+	    //search in new vk version
 	    if (pos == -1) {
 	    	search = 'class="top_profile_mrow" id="logout_link" href=';
 	    	pos = res.indexOf(search);
@@ -97,9 +113,6 @@ function vk(data, player) {
 	    	win.loadURL('file://' + __dirname + '/../../views/authentication.html');
 	    });
 	  });
-	}
-	this.APImethod = function(method, url) {
-		return 'https://api.vk.com/method/'+ method +'?'+ url +'v=5.40&access_token='+ data.vk.token;
 	}
 }
 

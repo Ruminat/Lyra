@@ -8,7 +8,7 @@ function SongsEvents(that) {
     	player.makeShuffle();
 		}
 	});
-	$('.songs').on('click', '.lyrics', function() {
+	$('.songs').on('click', '.lyrics:not(.inactive)', function() {
 		var elem = that.songsIconParent($(this));
 		var info = player.getSongData(elem[0]);
 		vk.request('audio.getLyrics', 'lyrics_id='+ info.lyrics, function(res) {
@@ -149,31 +149,6 @@ function SongsEvents(that) {
 			html += '<pre class="select">'+ text +'</pre>';
 
 			that.applyWin(html);
-		}
-	});
-	$('#songs-wrap').scroll(function() {
-		if (data.state == 'search') {
-			var elem   = document.getElementById('songs-wrap');
-			var h      = elem.scrollHeight - $(this).height();
-			var scroll = $(this).scrollTop();
-
-			if (h == scroll) {
-				that.srch.pos  = player.list.length;
-				var query = that.srch.query + `&offset=${that.srch.pos}`;
-				vk.request('audio.search', query, function(res) {
-					if (isSet(res)) {
-						var model = vk.addSongs(res.response.items);
-
-						$('.songs .wrapper').append(model);
-				    player.makeShuffle();
-				    player.stats.call();
-				    $('#srch-total-found').text('Всего найдено: '+ formatNumber(res.response.count));
-
-				    data.state = 'search';
-				    $('#songs-wrap').scrollTop($('#songs-wrap').scrollTop() + 1);
-					}
-				});
-			}
 		}
 	});
 }

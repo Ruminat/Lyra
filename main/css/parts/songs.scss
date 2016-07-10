@@ -37,13 +37,14 @@ canvas {
 		@extend .mrPale;
 
 		.duration  {
-			p       			  { display: none; 																		  }
-			.lyrics 			  { @include img('../img/png-jpg/lyrics.png');          }
-			.add    			  { @include img('../img/png-jpg/add.png');             }
-			.delete 			  { @include img('../img/png-jpg/delete.png');          }
-			.lyrics:hover   { @include img('../img/png-jpg/lyrics-active.png');   }
-			.delete:hover   { @include img('../img/png-jpg/delete-active.png');   }
-			.add:hover      { @include img('../img/png-jpg/add-active.png');      }
+			p       			   { display: none; 																     }
+			.add    			   { @include img('../img/png-jpg/add.png');             }
+			.delete 			   { @include img('../img/png-jpg/delete.png');          }
+			.delete:hover    { @include img('../img/png-jpg/delete-active.png');   }
+			.add:hover       { @include img('../img/png-jpg/add-active.png');      }
+			.lyrics.inactive { @include img('../img/png-jpg/lyrics-inactive.png'); }
+			.lyrics:not(.inactive) 			   		{ @include img('../img/png-jpg/lyrics.png');          	}
+			.lyrics:not(.inactive):hover   		{ @include img('../img/png-jpg/lyrics-active.png');   	}
 			.download.in-progress        		  { @include img('../img/png-jpg/download-inactive.png'); }
 			.download:not(.in-progress)       { @include img('../img/png-jpg/download.png');          }
 			.download:not(.in-progress):hover { @include img('../img/png-jpg/download-active.png');   }

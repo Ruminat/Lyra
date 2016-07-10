@@ -7,6 +7,7 @@
 	
 //My modules
 	const DefaultSettings = require('./../js/main/modules/defaultSettings.js');
+	const EndlessScroll   = require('./../js/main/modules/endlessScroll.js');
 	const SongsEvents     = require('./../js/main/modules/songs-events.js');
 	const Settings        = require('./../js/main/modules/settings.js');
 	/* Module for communities (or groups) in VK */
@@ -76,6 +77,7 @@ $(document).ready(function() {
 	window.audio     = new Audio(data);
 	window.player    = new Player(audio);
 	window.playlists = new Playlists(data);
+	window.es        = new EndlessScroll();
 	window.vk        = new Vk(data, player);
 	//Interface initialization
 	window.win       = remote.getCurrentWindow();

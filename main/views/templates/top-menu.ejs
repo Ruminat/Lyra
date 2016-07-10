@@ -1,7 +1,7 @@
 <div class="top-menu">
 	<div class="songsStuff">
 		<div class="search">
-			<input id="search-box" type="text" placeholder="Поиск">
+			<input id="search-box" type="text" placeholder="Поиск Вконтакте">
 		</div>
 
 		<div class="addSongs">
@@ -13,11 +13,14 @@
 	<div class="stats">
 		<ul>
 			<li id="songs-num">
-			<li id="vk-stuff"><div class="right">
-				<% include ../svg/downloads %>
-				<% include ../svg/refresh %>
-				<% include ../svg/bin %>
-				<% /* include ../svg/notification */ %>
+			<li id="panel"><div class="right">
+				<input type="text" class="songs-search" id="search-in-playlist" placeholder="Поиск по аудиозаписям">
+				<div class="icons">
+					<% include ../svg/downloads %>
+					<% include ../svg/refresh %>
+					<% include ../svg/empty %>
+					<% /* include ../svg/notification */ %>
+				</div>
 			</div>
 		</ul>
 	</div>
