@@ -1,6 +1,6 @@
 function vk(data, player) {
 	var that = this;
-	var v    = '5.52';
+	const v  = '5.52';
 
 	//Parse login data (id, token)
 	this.parseLogin = function(win) {
@@ -21,11 +21,22 @@ function vk(data, player) {
 	}
 
 	this.download = function(info, path, cb) {
-		request(info.url, () => {
-			if (isSet(cb)) cb();
-		}).pipe(
-			fs.createWriteStream(`${path}${info.artist} - ${info.title}.mp3`)
-		);
+		var parsedUrl = URL.parse(info.url);
+		var file = fs.createWriteStream(`${path}${info.artist} - ${info.title}.mp3`);
+		var options = {
+			host: parsedUrl.host,
+			path: parsedUrl.path
+		};
+
+		http.request(options, (res) => {
+			res.on('data', (part) => {
+				file.write(part);
+			});
+			res.on('end', () => {
+				file.close();
+				if (isSet(cb)) cb();
+			});
+		}).end();
 	}
 
 	this.online = function() {
@@ -35,7 +46,6 @@ function vk(data, player) {
 	}
 
 	this.resItems = (res) => {
-		// console.log(res.response);
 		if (isSet(res)) {
 			if (isSet(res.response.items)) return res.response.items
 			else return res.response;

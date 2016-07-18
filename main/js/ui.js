@@ -1,6 +1,5 @@
 function interface(win, data) {
 	win.setMinimumSize(228, 70);
-
 	win.removeAllListeners();
 
 	/*
@@ -15,21 +14,17 @@ function interface(win, data) {
 	});
 
 	$('#resize-window').click(function() {
-		if (win.isMaximized()){
-			win.unmaximize();
-		} else {
-			win.maximize();
-		}
+		if ( win.isMaximized() ) win.unmaximize();
+		else win.maximize();
 	});
 	$('#minimize-window').click(function() { win.minimize(); });
-	$('#close-Lyra').click(function()      { app.quit(); });
+	$('#close-Lyra').click(function()      { app.quit(); 		 });
 
 	$('window').on('online', function()    { data.connection = true;  });
 	$('window').on('offline', function()   { data.connection = false; });
 
 	$('.error .button').click(function()   { $('.error').css('display', 'none'); });	
 
-	//You need to delete that in production
 	$(document).keydown(function(e) {
 		if (e.keyCode == 116) {
 			win.removeAllListeners();
@@ -38,7 +33,6 @@ function interface(win, data) {
 			win.openDevTools();
 		}
 	});
-	//Yep, you need
 }
 
 module.exports = interface;

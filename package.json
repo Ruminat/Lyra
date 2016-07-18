@@ -13,7 +13,5 @@
     "gulp-ejs": "^2.1.2",
     "gulp-util": "^3.0.7"
   },
-  "dependencies": {
-    "request": "^2.72.0"
-  }
+  "dependencies": {}
 }

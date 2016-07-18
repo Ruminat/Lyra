@@ -1,9 +1,10 @@
 //Node and Electron modules
-	const globalShortcut  = remote.globalShortcut;
-	const dialog          = remote.dialog;
-	const request         = require('request');
-	const path            = require('path');
-	const fs              = require('fs');
+	const globalShortcut = remote.globalShortcut;
+	const dialog         = remote.dialog;
+	const path           = require('path');
+	const fs             = require('fs');
+	const http           = require('http');
+	const URL            = require('url');
 	
 //My modules
 	const DefaultSettings = require('./../js/main/modules/defaultSettings.js');
